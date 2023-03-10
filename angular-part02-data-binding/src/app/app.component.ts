@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   ]
 })
 export class AppComponent {
-  title = 'angular-part02-data-binding';
+  title: string = "Titulo do App Component"
+
+  constructor() {
+
+  }
 }

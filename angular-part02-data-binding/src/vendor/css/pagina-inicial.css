@@ -1,0 +1,60 @@
+div.container {
+  background-color: #ccc;
+}
+div.container section article {
+  max-width: 700px;
+  text-align: center;
+  margin: 20px auto;
+  padding: 0 2%;
+}
+div.container section article h2 {
+  margin: 10px 0;
+  font-size: 40px;
+  font-weight: lighter;
+  color: #666;
+}
+div.container section article p {
+  margin: 10px 0;
+  font-size: 20px;
+  font-weight: lighter;
+  color: #666;
+}
+div.container section article p span {
+  color: dodgerblue;
+  font-weight: bold;
+}
+div.container section article h3 {
+  margin: 10px 0;
+  font-size: 30px;
+  font-weight: lighter;
+  color: dodgerblue;
+}
+div.container section article hr {
+  margin: 20px 0;
+}
+div.container section article select {
+  margin: 20px 0;
+  padding: 10px 20px;
+}
+div.container section article form {
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: left;
+}
+div.container section article form input.form-control::placeholder {
+  color: #ccc;
+}
+div.container section article form span {
+  color: dodgerblue;
+  font-weight: bold;
+}
+div.container section article form p {
+  color: #000;
+  border-bottom: 1px solid #666;
+}
+.bgHighlight {
+  background-color: gold;
+  font-weight: bold !important;
+}
+
+/*# sourceMappingURL=pagina-inicial.css.map */

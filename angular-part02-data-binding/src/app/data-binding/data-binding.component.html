@@ -1,0 +1,88 @@
+<div class="container">
+  <section>
+    <article>
+      <h2>Interpolação / Interpolation</h2>
+      <p>String renderizada com interpolação: <span>{{ url }}</span></p>
+      <p>Resultado de 1 + 1 é = <span>{{ 1 + 1 }}</span></p>
+      <p>Resultado de 1 + 1 não é: <span>{{ 1 + 1 + getValor() }}</span></p>
+      <p>Curso de Angular E gosto do curso: <span>{{ cursoAngular && getCurtirCurso() }}</span></p>
+      <h3>Imagem utilizando interpolação</h3>
+      <img src="{{ urlImagem }}" alt="">
+    </article><!--article-->
+
+    <hr>
+    <article>
+      <h2>Property Binding [atributo]="valor"</h2>
+      <h3>Imagem utilizando Property Binding [src]</h3>
+      <img [src]="urlImagem" alt="">
+    </article><!--article-->
+
+    <hr>
+    <article>
+      <h2>Class Binding [class]</h2>
+      <div [class]="corSelecionada" class="alert">
+        <p>Selecione uma classe:</p>
+        <select name="cor" #corEscolhida (change)="trocouValor($event)" id="selectCor">
+          <option value="0" disabled selected>Escolha</option>
+          <option value="alert-success">Sucesso</option>
+          <option value="alert-info">Info</option>
+          <option value="alert-warning">Warning</option>
+          <option value="alert-danger">Erro</option>
+        </select>
+
+        <div class="alert {{ corEscolhida.value }}" style="margin: 0;">
+          Texto colorido conforme o valor do select
+        </div>
+
+        <div [hidden]="corEscolhida.value != 'alert-success'" class="alert"
+             [class.alert-success]="corEscolhida.value === 'alert-success'" role="alert">
+          <p>Cor escolhida = Sucesso</p>
+        </div>
+        <div [hidden]="corEscolhida.value != 'alert-info'" class="alert"
+             [class.alert-info]="corEscolhida.value === 'alert-info'" role="alert">
+          <p>Cor escolhida = Info</p>
+        </div>
+        <div [hidden]="corEscolhida.value != 'alert-warning'" class="alert"
+             [class.alert-warning]="corEscolhida.value === 'alert-warning'" role="alert">
+          <p>Cor escolhida = Warning</p>
+        </div>
+        <div [hidden]="corEscolhida.value != 'alert-danger'" class="alert"
+             [class.alert-danger]="corEscolhida.value === 'alert-danger'" role="alert">
+          <p>Cor escolhida = Danger</p>
+        </div>
+
+
+      </div>
+    </article><!--article-->
+
+    <hr>
+    <article>
+      <h2>Style Binding [style]</h2>
+      <small>Selecione a opção danger no select para ativar o Style Binding</small>
+      <div class="alert alert-danger" role="alert"
+           [style.display]="corEscolhida.value === 'alert-danger' ? 'block' : 'none'">
+        Esse texto somente aparece em caso de erro.
+      </div>
+    </article><!--article-->
+
+    <hr>
+    <article>
+      <h2>Event Binding (event)</h2>
+      <form action="#">
+        <div class="row">
+          <div class="col-12">
+            <input class="form-control" #inputElement type="text" (keyup)="onKeyUp($event)" (blur)="onBlur(inputElement)" (keyup.enter)="onKeyUpEnter(inputElement.value)" placeholder="Evento Keyup">
+            <small class="small d-block">O valor atual é: <span>{{ valorAtual }}</span></small>
+            <small class="small">O valor quando tirar o focus é: <span>{{ valorNoFocus }}</span></small>
+            <small class="small d-block">O valor salvo é: <span>{{ valorSalvo }}</span></small>
+            <p class="d-inline-block" [class.bgHighlight]="isMouseOver" (mouseover)="onMouseOverAndOut()" (mouseout)="onMouseOverAndOut()">Passe o mouse sobre mim</p>
+          </div><!--col-->
+        </div><!--row-->
+        <div class="py-2">
+          <button type="button" class="btn btn-primary" (click)="botaoClicado()">Me Clique!</button>
+        </div>
+      </form>
+
+    </article><!--article-->
+  </section>
+</div><!--container-->
