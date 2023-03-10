@@ -10,7 +10,9 @@ const PI = 3.14;
 var num2 = [1, 2, 3];
 
 var n1: string = "variavel do tipo texto";
+var numero2 = 30;
 
+let idade: string;
 
 
 num2.map(function (valor) {
