@@ -50,8 +50,6 @@
              [class.alert-danger]="corEscolhida.value === 'alert-danger'" role="alert">
           <p>Cor escolhida = Danger</p>
         </div>
-
-
       </div>
     </article><!--article-->
 
@@ -71,18 +69,37 @@
       <form action="#">
         <div class="row">
           <div class="col-12">
-            <input class="form-control" #inputElement type="text" (keyup)="onKeyUp($event)" (blur)="onBlur(inputElement)" (keyup.enter)="onKeyUpEnter(inputElement.value)" placeholder="Evento Keyup">
+            <input class="form-control" #inputElement type="text" (keyup)="onKeyUp($event)"
+                   (blur)="onBlur(inputElement)" (keyup.enter)="onKeyUpEnter(inputElement.value)"
+                   placeholder="Evento Keyup">
             <small class="small d-block">O valor atual é: <span>{{ valorAtual }}</span></small>
             <small class="small">O valor quando tirar o focus é: <span>{{ valorNoFocus }}</span></small>
             <small class="small d-block">O valor salvo é: <span>{{ valorSalvo }}</span></small>
-            <p class="d-inline-block" [class.bgHighlight]="isMouseOver" (mouseover)="onMouseOverAndOut()" (mouseout)="onMouseOverAndOut()">Passe o mouse sobre mim</p>
+            <p class="d-inline-block" [class.bgHighlight]="isMouseOver" (mouseover)="onMouseOverAndOut()"
+               (mouseout)="onMouseOverAndOut()">Passe o mouse sobre mim</p>
           </div><!--col-->
         </div><!--row-->
         <div class="py-2">
           <button type="button" class="btn btn-primary" (click)="botaoClicado()">Me Clique!</button>
         </div>
       </form>
-
     </article><!--article-->
+
+    <hr>
+
+    <app-meu-form></app-meu-form>
+
+    <hr>
+    <article>
+      <h2>Input Property @Input</h2>
+      <app-input-property [nome]="nomeDoCurso"></app-input-property>
+    </article><!--article-->
+
+    <hr>
+    <article>
+      <h2>Output Property @Output</h2>
+      <app-output-property [valor]="valorInicial" (mudouValor)="onMudouValor($event)" (alterouValorTotal)="onAlterouValorTotal($event)"></app-output-property>
+      <small class="small">O valor passado do Componente filho para o Componente Pai: <span>{{ valorMudou }}</span></small>
+    </article>
   </section>
 </div><!--container-->

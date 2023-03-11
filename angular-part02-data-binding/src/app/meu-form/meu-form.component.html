@@ -1,0 +1,21 @@
+<article>
+  <h2>Two-way Data Binding [(ngModel)]</h2>
+  <form action="#">
+    <div class="row">
+      <div class="col-md-12">
+        <input type="text" class="form-control" name="nome" [(ngModel)]="nome" placeholder="Digite alguma coisa">
+        <div class="form-text">Voce digitou: <span>{{ nome }}</span></div>
+      </div><!--col-->
+    </div><!--row-->
+    <div class="row py-2">
+      <div class="col-md-12">
+        <input type="text" class="form-control" name="nomePessoa" [(ngModel)]="pessoa.nome" placeholder="Informe um nome">
+        <small>Meu nome é: <span>{{ pessoa.nome }}</span></small>
+      </div><!--col-->
+      <div class="col-md-12">
+        <input type="text" class="form-control" name="idadePessoa" [(ngModel)]="pessoa.idade" placeholder="Informe sua idade">
+        <small>Tenho: <span>{{ pessoa.idade }}</span> anos.</small>
+      </div><!--col-->
+    </div><!--row-->
+  </form>
+</article>

@@ -1,0 +1,10 @@
+<article class="output">
+  <p>Valor inicial sendo passado via @Input Property</p>
+  <div class="row">
+    <button class="btn btn-primary col-1 offset-3" (click)="decrementa()">-</button>
+    <div class="col-4 px-1">
+      <input type="text" class="form-control text-center" readonly [value]="valor">
+    </div>
+    <button class="btn btn-primary col-1" (click)="incrementa()">+</button>
+  </div><!--row-->
+</article>

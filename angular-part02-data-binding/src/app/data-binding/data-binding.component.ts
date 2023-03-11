@@ -12,6 +12,9 @@ export class DataBindingComponent {
   valorSalvo?: string;
   valorNoFocus?: string;
   isMouseOver?: boolean = false;
+  nomeDoCurso?: string = "Angular";
+  valorInicial?: number = 15;
+  valorMudou?: number;
   valor1?: string | null | number = 0;
   urlImagem: string = "https://fastly.picsum.photos/id/15/400/200.jpg?hmac=uaNcI09cB5t0vyWFjgyTBgL8MVu7HWAW8wajAc_NWyM";
   urlRandomImage: string = "https://picsum.photos/400/200";
@@ -44,8 +47,17 @@ export class DataBindingComponent {
     this.valorSalvo = valor;
   }
 
-
   onMouseOverAndOut() {
     this.isMouseOver = !this.isMouseOver;
   }
+
+  onMudouValor($event: any) {
+    console.log($event.novoValor);
+    this.valorMudou = $event.novoValor;
+  }
+
+  onAlterouValorTotal($event: number) {
+    console.log($event)
+  }
+
 }
