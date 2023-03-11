@@ -19,7 +19,6 @@ export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentIni
   valor:number = 5;
   deletarCiclo:boolean = false;
   ciclos: string[] = [];
-  subscription: Subscription | undefined;
   mudarValor() {
     this.valor++;
   }
