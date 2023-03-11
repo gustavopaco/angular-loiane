@@ -1,3 +1,15 @@
 {{title}}
 <app-primeiro-componente></app-primeiro-componente>
 <app-cursos></app-cursos>
+<app-ciclo-de-vida [valorInicial]="valor" *ngIf="!deletarCiclo" (ciclosDeVida)="addCiclo($event)"></app-ciclo-de-vida>
+
+  <button class="btn btn-primary mx-3" (click)="mudarValor()">Mudar Valor pelo Pai!</button>
+  <button class="btn btn-primary" (click)="destruirCiclo()">Deletar Componente</button>
+
+<article>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let i of ciclos">{{i}}</li>
+  </ul>
+</article>
+
+
