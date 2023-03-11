@@ -1,0 +1,13 @@
+<div class="container">
+<article>
+  <div class="row">
+    <div class="col-6 offset-2 px-1">
+      <input class="form-control" type="text" #campoInput>
+    </div>
+    <button class="btn btn-primary col-2" (click)="getValor()">Salvar</button>
+    <div class="row py-2">
+      <small class="d-block col-8 offset-2 text-start">O valor do campo input com @View-Child é: <span>{{ valorAtualizado }}</span></small>
+    </div>
+  </div><!--row-->
+</article>
+</div>

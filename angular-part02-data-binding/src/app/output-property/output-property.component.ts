@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-output-property',
@@ -13,15 +13,24 @@ export class OutputPropertyComponent{
   @Output() alterouValorTotal = new EventEmitter<number>();
   @Output() mudouValor = new EventEmitter();
 
+  // @ViewChild('campoInput') campoValorInput?: ElementRef
+
   decrementa() {
     this.valor != undefined ? this.valor-- : undefined;
     this.mudouValor.emit({novoValor: this.valor})
     this.alterouValorTotal.emit(this.valor);
+    // (this.campoValorInput != undefined ? this.campoValorInput.nativeElement.value-- : undefined);
+    // this.mudouValor.emit({novoValor: this.campoValorInput?.nativeElement.value});
+    // this.alterouValorTotal.emit(this.campoValorInput?.nativeElement.value);
   }
 
   incrementa() {
-    this.valor != undefined ? this.valor++ : undefined
+    this.valor != undefined ? this.valor++ : undefined;
     this.mudouValor.emit({novoValor: this.valor})
     this.alterouValorTotal.emit(this.valor);
+    // (this.campoValorInput != undefined ? this.campoValorInput.nativeElement.value++ : undefined);
+    // this.mudouValor.emit({novoValor: this.campoValorInput?.nativeElement.value});
+    // this.alterouValorTotal.emit(this.campoValorInput?.nativeElement.value);
+
   }
 }

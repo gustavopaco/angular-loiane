@@ -91,15 +91,21 @@
 
     <hr>
     <article>
-      <h2>Input Property @Input</h2>
+      <h2>Input Property Binding @Input</h2>
       <app-input-property [nome]="nomeDoCurso"></app-input-property>
     </article><!--article-->
 
     <hr>
     <article>
-      <h2>Output Property @Output</h2>
+      <h2>Output Property Binding @Output</h2>
       <app-output-property [valor]="valorInicial" (mudouValor)="onMudouValor($event)" (alterouValorTotal)="onAlterouValorTotal($event)"></app-output-property>
       <small class="small">O valor passado do Componente filho para o Componente Pai: <span>{{ valorMudou }}</span></small>
+    </article>
+
+    <hr>
+    <article>
+      <h2>View-child Binding @View-child</h2>
+      <app-view-child></app-view-child>
     </article>
   </section>
 </div><!--container-->
