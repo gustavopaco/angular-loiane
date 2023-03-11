@@ -1,0 +1,15 @@
+<section class="deep-purple accent-3 white-text text-center py-3">
+  <h2 class="py-2">[ngClass]</h2>
+  <p class="py-2">Clique na estrela para adicionar/remover classe</p>
+  <div class="pe-5 d-inline-block">
+    <p>Metodo 1</p>
+    <i class="fa-star" (click)="onClickStar()" [ngClass]="{'fa-solid': clicked, 'fa-regular': !clicked}"></i>
+  </div>
+  <div class="d-inline-block">
+    <p>Metodo 2</p>
+    <i class="fa-star" (click)="onClickStar()" [ngClass]="clicked ? 'fa-solid' : 'fa-regular'"></i>
+  </div>
+  <!--  <i class="fa-star" (click)="onClickStar()" [class.fa-solid]="clicked" [class.fa-regular]="!clicked"></i>-->
+  <!--  <i class="fa-solid fa-star"></i>-->
+  <!--  <i class="fa-regular fa-star"></i>-->
+</section>

@@ -1,0 +1,31 @@
+@import "color-variables";
+@import "color-classes";
+
+section {
+
+  h2 {
+    font-weight: lighter;
+  }
+
+  a {
+    &:hover {
+      @extend .grey-text
+    }
+  }
+
+  i {
+    font-size: 30px;
+    color: gold;
+  }
+}
+
+.custom-btn {
+  width: 100px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+}
+
+.active {
+  color: gold !important;
+}

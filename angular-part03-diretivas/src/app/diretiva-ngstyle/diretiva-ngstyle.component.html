@@ -1,0 +1,19 @@
+<section class="deep-purple accent-3 white-text text-center py-3">
+  <h2 class="py-2">[ngStyle]</h2>
+  <div class="row g-1 py-2 align-items-center">
+    <div class="col-sm-4 offset-sm-4 px-2">
+      <input type="text" class="form-control text-center" [(ngModel)]="tamanhoFonte" placeholder="Tamanho da fonte">
+    </div><!--col-->
+
+    <div class="col-sm-4 text-start ps-2 py-2">
+<!--      <button class="btn btn-primary d-inline-block">Enviar</button>-->
+      <button class="custom-btn" (click)="alterarStyle()"
+              [ngStyle]="{'backgroundColor': (ativo ? 'blue' : 'gray'),
+                'color': (ativo ? 'white': 'black'),
+                'fontWeight': (ativo ? 'bold': 'lighter'),
+                'fontSize': tamanhoFonte +'px'
+              }">Alterar Style
+      </button>
+    </div>
+  </div><!--row-->
+</section>
