@@ -1,34 +1,29 @@
 import {
   AfterContentChecked,
   AfterContentInit,
-  AfterViewChecked,
+  AfterViewChecked, ChangeDetectorRef,
   Component,
   DoCheck,
   OnChanges, OnDestroy,
   OnInit, SimpleChanges
 } from '@angular/core';
+import {CiclosVidaService} from "./shared/ciclos-vida.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: [
-  ]
+  styleUrls: []
 })
-export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewChecked, OnDestroy{
+export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewChecked, OnDestroy {
   title = 'Titulo 1';
-  valor:number = 5;
-  deletarCiclo:boolean = false;
-  ciclos: string[] = [];
-  mudarValor() {
-    this.valor++;
-  }
+  valor: number = 5;
+  deletarCiclo: boolean = false;
+  ciclos?: string[];
+  passou = false;
 
-  destruirCiclo() {
-    this.deletarCiclo = true;
-  }
-
-  constructor() {
+  constructor(private ciclosVidaService: CiclosVidaService, private changeDetection: ChangeDetectorRef) {
     this.log("Construtor");
+    this.passou = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,6 +32,10 @@ export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentIni
   }
 
   ngOnInit(): void {
+    this.ciclosVidaService.getNotification().subscribe(response => {
+      this.ciclos = response;
+
+    })
     this.log("ngOnInit");
   }
 
@@ -47,6 +46,7 @@ export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentIni
   ngAfterContentInit(): void {
     this.log("ngAfterContentInit");
   }
+
   ngAfterContentChecked(): void {
     this.log("ngAfterContentChecked");
   }
@@ -59,13 +59,28 @@ export class AppComponent implements OnChanges, OnInit, DoCheck, AfterContentIni
     this.log("ngOnDestroy");
   }
 
-  private log(value:string) {
+  private log(value: string): void {
     console.log("Pai: " + value)
-    this.ciclos?.push(`Pai: ${value}`);
+    this.ciclosVidaService.addCiclo(`Pai: ${value}`);
+    if (this.passou) {
+      this.changeDetection.detectChanges();
+    }
   }
 
-  addCiclo($event: string) {
-    this.ciclos?.push($event);
+  mudarValor(): void {
+    this.ciclosVidaService.isChanged = true;
+    if (this.ciclosVidaService.isChanged) {
+      this.ciclosVidaService.resetCiclo();
+      console.log(this.ciclosVidaService.getCiclos())
+    }
+    this.valor++;
   }
 
+  destruirCiclo() {
+    this.deletarCiclo = true;
+  }
+
+  public trackItem(index: number, item: any) {
+    return item.trackId;
+  }
 }

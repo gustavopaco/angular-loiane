@@ -1,13 +1,16 @@
 import {
   AfterContentChecked,
-  AfterContentInit, AfterViewChecked,
+  AfterContentInit,
+  AfterViewChecked,
   Component,
-  DoCheck, EventEmitter, Input,
+  DoCheck,
+  Input,
   OnChanges,
   OnDestroy,
-  OnInit, Output,
+  OnInit,
   SimpleChanges
 } from '@angular/core';
+import {CiclosVidaService} from "../shared/ciclos-vida.service";
 
 @Component({
   selector: 'app-ciclo-de-vida',
@@ -17,9 +20,10 @@ import {
 export class CicloDeVidaComponent implements OnChanges, OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewChecked, OnDestroy {
 
   @Input() valorInicial: number = 10;
-  @Output() ciclosDeVida = new EventEmitter<string>();
 
-  constructor() {
+  // @Output() ciclosDeVida = new EventEmitter<string>();
+
+  constructor(private ciclosVidaService: CiclosVidaService) {
     this.log("Construtor");
   }
 
@@ -38,6 +42,7 @@ export class CicloDeVidaComponent implements OnChanges, OnInit, DoCheck, AfterCo
   ngAfterContentInit(): void {
     this.log("ngAfterContentInit");
   }
+
   ngAfterContentChecked(): void {
     this.log("ngAfterContentChecked");
   }
@@ -52,10 +57,12 @@ export class CicloDeVidaComponent implements OnChanges, OnInit, DoCheck, AfterCo
 
   private log(value: string) {
     console.log("Filho: " + value);
-    this.ciclosDeVida.emit(`Filho: ${value}`);
+    this.ciclosVidaService.addCiclo(`Filho: ${value}`);
+    // this.ciclosDeVida.emit(`Filho: ${value}`);
   }
 
   clicar() {
+    this.ciclosVidaService.resetCiclo();
     this.valorInicial++;
   }
 }
