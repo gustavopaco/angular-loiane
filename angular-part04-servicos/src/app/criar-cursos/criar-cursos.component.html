@@ -1,0 +1,16 @@
+<section class="text-center py-2">
+  <h2 class="py-2">Compartilhando um Serviço entre componentes</h2>
+  <article class="mx-auto">
+    <ul class="d-inline-block text-start">
+      <li *ngFor="let i of cursos">{{ i }}</li>
+    </ul>
+    <div class="row g-1 py-2">
+      <div class="col-sm-6 offset-sm-4">
+        <input class="form-control" type="text" name="nomeCurso" [(ngModel)]="nomeCurso" placeholder="Informe o nome do Curso">
+      </div><!--col-->
+      <div class="col-sm-2 text-start">
+        <button class="btn btn-primary" (click)="salvarNovoCurso()">Salvar</button>
+      </div><!--col-->
+    </div><!--row-->
+  </article>
+</section>
