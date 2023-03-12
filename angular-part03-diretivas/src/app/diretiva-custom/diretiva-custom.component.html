@@ -18,5 +18,23 @@
 
 <section class="deep-purple accent-3 white-text text-center py-3">
   <h2 class="py-2">Diretiva customizada v3</h2>
-  <p [highlight]="'red'" [defaultColor]="'grey'" >Texto com highlight com cores customizadas</p>
+  <p [highlight]="'red'" [defaultColor]="'grey'">Texto com highlight com cores customizadas</p>
+</section>
+
+<hr class="m-0">
+
+<section class="deep-purple accent-3 white-text text-center pb-3">
+  <h2 class="py-2">*ngIf</h2>
+  <p class="d-inline-block">Destroi elemento se for falso. Muito utilizado para parte de segurança de permissões</p>
+  <div class="row py-2" *ngIf="mostrarCursos">
+    <div class="col-md-12">
+      <p>Lista de cursos</p>
+    </div><!--col-->
+  </div><!--row-->
+  <div class="row py-2" *ngElse="mostrarCursos">
+    <div class="col-md-12">
+      <p>Não existem cursos a serem listados</p>
+    </div><!--col-->
+  </div><!--row-->
+  <button type="button" class="btn btn-warning my-2" (click)="onMostrarCursos()">Mostrar/Esconder Cursos</button>
 </section>
