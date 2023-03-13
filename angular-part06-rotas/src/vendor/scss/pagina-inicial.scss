@@ -1,0 +1,22 @@
+@import "color-variables";
+@import "color-classes";
+.container {
+  //margin-top: 56px;
+
+}
+
+.custom-container {
+  padding-top: 56px;
+}
+
+section.cursos {
+  max-width: 600px;
+
+  a{
+    transition: 0.6s;
+    &:hover {
+
+      @extend .green, .accent-1;
+    }
+  }
+}

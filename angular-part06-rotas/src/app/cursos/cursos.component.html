@@ -1,0 +1,5 @@
+<section class="cursos py-2">
+<div class="list-group">
+  <a class="list-group-item list-group-item-action" [routerLink]="['/curso/',i.id]" *ngFor="let i of cursos">{{ i.nome }}</a>
+</div>
+</section>
