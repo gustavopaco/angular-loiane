@@ -1,6 +1,6 @@
 <section class="text-center grey lighten-3 black-text py-2">
-  <h2 class="py-2">Pipes Formatar Dados</h2>
   <article class="mx-auto">
+    <h2 class="py-2">Pipes Formatar Dados</h2>
     <p>Título: {{ livro.titulo | uppercase | camelCase }}</p>
     <p>Estrelas: {{ livro.rating | number:'1.1-1' }}</p>
     <p>Páginas: {{ livro.numeroPaginas | number }}</p>
@@ -8,5 +8,72 @@
     <p>Data Lançamento: {{ livro.dataLancamento | date:'dd/MM/yyyy' }}</p>
     <p>Url: {{ livro.url }}</p>
     <p>Livro: {{ livro | json }}</p>
+    <p>Async Promise: {{ valorPromiseAsync | async}}</p>
+    <p>Async Observable: {{ valorObservableAsync | async}}</p>
+  </article>
+
+  <hr class="m-0">
+  <article class="mx-auto">
+    <h2>Como utilizar Filtro com lista corretamente</h2>
+    <p>Basicamente utilizar METODOS em vez de Pipe quando valores forem dinamicos(podem mudar)</p>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorFiltrado" placeholder="Filtro...">
+      </div>
+    </div>
+    <ul class="d-inline-block text-start">
+      <li *ngFor="let i of listaComFiltro()">{{ i | uppercase }}</li>
+    </ul>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorAdicionado" placeholder="Adicionar novo Valor...">
+      </div>
+      <div class="col-md-auto text-start">
+        <button class="btn btn-success" type="button" (click)="addValor()">Adicionar</button>
+      </div><!--col-->
+    </div><!--row-->
+  </article>
+
+
+  <hr class="m-0">
+  <article class="mx-auto">
+    <h2>*Nao utilizar Pipe Puro com Filtro de lista</h2>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorFiltrado" placeholder="Filtro...">
+      </div>
+    </div>
+    <ul class="d-inline-block">
+      <li *ngFor="let i of livros | filtroArray : valorFiltrado">{{ i | uppercase }}</li>
+    </ul>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorAdicionado" placeholder="Adicionar novo Valor...">
+      </div>
+      <div class="col-md-auto text-start">
+        <button class="btn btn-success" type="button" (click)="addValor()">Adicionar</button>
+      </div><!--col-->
+    </div><!--row-->
+  </article>
+
+  <hr class="m-0">
+  <article class="mx-auto">
+    <h2>*Nao utilizar Pipe Impuro com Filtro lista</h2>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorFiltrado" placeholder="Filtro...">
+      </div>
+    </div>
+    <ul class="d-inline-block">
+      <li *ngFor="let i of livros | filtroArrayImpuro : valorFiltrado">{{ i | uppercase }}</li>
+    </ul>
+    <div class="row py-2">
+      <div class="col-md-6 offset-md-3">
+        <input class="form-control" type="text" [(ngModel)]="valorAdicionado" placeholder="Adicionar novo Valor...">
+      </div>
+      <div class="col-md-auto text-start">
+        <button class="btn btn-success" type="button" (click)="addValor()">Adicionar</button>
+      </div><!--col-->
+    </div><!--row-->
   </article>
 </section>
