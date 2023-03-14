@@ -158,7 +158,7 @@
   color: #B71C1C !important;
 }
 
-.red.accent-1, section.cursos a.red:hover {
+.red.accent-1, section.cursos a.red:hover, section.alunos a.red:hover {
   background-color: #FF8A80 !important;
 }
 
@@ -270,7 +270,7 @@
   color: #880e4f !important;
 }
 
-.pink.accent-1, section.cursos a.pink:hover {
+.pink.accent-1, section.cursos a.pink:hover, section.alunos a.pink:hover {
   background-color: #ff80ab !important;
 }
 
@@ -382,7 +382,7 @@
   color: #4a148c !important;
 }
 
-.purple.accent-1, section.cursos a.purple:hover {
+.purple.accent-1, section.cursos a.purple:hover, section.alunos a.purple:hover {
   background-color: #ea80fc !important;
 }
 
@@ -494,7 +494,7 @@
   color: #311b92 !important;
 }
 
-.deep-purple.accent-1, section.cursos a.deep-purple:hover {
+.deep-purple.accent-1, section.cursos a.deep-purple:hover, section.alunos a.deep-purple:hover {
   background-color: #b388ff !important;
 }
 
@@ -606,7 +606,7 @@
   color: #1a237e !important;
 }
 
-.indigo.accent-1, section.cursos a.indigo:hover {
+.indigo.accent-1, section.cursos a.indigo:hover, section.alunos a.indigo:hover {
   background-color: #8c9eff !important;
 }
 
@@ -718,7 +718,7 @@
   color: #0D47A1 !important;
 }
 
-.blue.accent-1, section.cursos a.blue:hover {
+.blue.accent-1, section.cursos a.blue:hover, section.alunos a.blue:hover {
   background-color: #82B1FF !important;
 }
 
@@ -830,7 +830,7 @@
   color: #01579b !important;
 }
 
-.light-blue.accent-1, section.cursos a.light-blue:hover {
+.light-blue.accent-1, section.cursos a.light-blue:hover, section.alunos a.light-blue:hover {
   background-color: #80d8ff !important;
 }
 
@@ -942,7 +942,7 @@
   color: #006064 !important;
 }
 
-.cyan.accent-1, section.cursos a.cyan:hover {
+.cyan.accent-1, section.cursos a.cyan:hover, section.alunos a.cyan:hover {
   background-color: #84ffff !important;
 }
 
@@ -1054,7 +1054,7 @@
   color: #004d40 !important;
 }
 
-.teal.accent-1, section.cursos a.teal:hover {
+.teal.accent-1, section.cursos a.teal:hover, section.alunos a.teal:hover {
   background-color: #a7ffeb !important;
 }
 
@@ -1086,7 +1086,7 @@
   color: #00bfa5 !important;
 }
 
-.green, section.cursos a:hover {
+.green, section.cursos a:hover, section.alunos a:hover {
   background-color: #4CAF50 !important;
 }
 
@@ -1094,7 +1094,7 @@
   color: #4CAF50 !important;
 }
 
-.green.lighten-5, section.cursos a.lighten-5:hover {
+.green.lighten-5, section.cursos a.lighten-5:hover, section.alunos a.lighten-5:hover {
   background-color: #E8F5E9 !important;
 }
 
@@ -1102,7 +1102,7 @@
   color: #E8F5E9 !important;
 }
 
-.green.lighten-4, section.cursos a.lighten-4:hover {
+.green.lighten-4, section.cursos a.lighten-4:hover, section.alunos a.lighten-4:hover {
   background-color: #C8E6C9 !important;
 }
 
@@ -1110,7 +1110,7 @@
   color: #C8E6C9 !important;
 }
 
-.green.lighten-3, section.cursos a.lighten-3:hover {
+.green.lighten-3, section.cursos a.lighten-3:hover, section.alunos a.lighten-3:hover {
   background-color: #A5D6A7 !important;
 }
 
@@ -1118,7 +1118,7 @@
   color: #A5D6A7 !important;
 }
 
-.green.lighten-2, section.cursos a.lighten-2:hover {
+.green.lighten-2, section.cursos a.lighten-2:hover, section.alunos a.lighten-2:hover {
   background-color: #81C784 !important;
 }
 
@@ -1126,7 +1126,7 @@
   color: #81C784 !important;
 }
 
-.green.lighten-1, section.cursos a.lighten-1:hover {
+.green.lighten-1, section.cursos a.lighten-1:hover, section.alunos a.lighten-1:hover {
   background-color: #66BB6A !important;
 }
 
@@ -1134,7 +1134,7 @@
   color: #66BB6A !important;
 }
 
-.green.darken-1, section.cursos a.darken-1:hover {
+.green.darken-1, section.cursos a.darken-1:hover, section.alunos a.darken-1:hover {
   background-color: #43A047 !important;
 }
 
@@ -1142,7 +1142,7 @@
   color: #43A047 !important;
 }
 
-.green.darken-2, section.cursos a.darken-2:hover {
+.green.darken-2, section.cursos a.darken-2:hover, section.alunos a.darken-2:hover {
   background-color: #388E3C !important;
 }
 
@@ -1150,7 +1150,7 @@
   color: #388E3C !important;
 }
 
-.green.darken-3, section.cursos a.darken-3:hover {
+.green.darken-3, section.cursos a.darken-3:hover, section.alunos a.darken-3:hover {
   background-color: #2E7D32 !important;
 }
 
@@ -1158,7 +1158,7 @@
   color: #2E7D32 !important;
 }
 
-.green.darken-4, section.cursos a.darken-4:hover {
+.green.darken-4, section.cursos a.darken-4:hover, section.alunos a.darken-4:hover {
   background-color: #1B5E20 !important;
 }
 
@@ -1166,7 +1166,7 @@
   color: #1B5E20 !important;
 }
 
-.green.accent-1, section.cursos a:hover {
+.green.accent-1, section.cursos a:hover, section.alunos a:hover {
   background-color: #B9F6CA !important;
 }
 
@@ -1174,7 +1174,7 @@
   color: #B9F6CA !important;
 }
 
-.green.accent-2, section.cursos a.accent-2:hover {
+.green.accent-2, section.cursos a.accent-2:hover, section.alunos a.accent-2:hover {
   background-color: #69F0AE !important;
 }
 
@@ -1182,7 +1182,7 @@
   color: #69F0AE !important;
 }
 
-.green.accent-3, section.cursos a.accent-3:hover {
+.green.accent-3, section.cursos a.accent-3:hover, section.alunos a.accent-3:hover {
   background-color: #00E676 !important;
 }
 
@@ -1190,7 +1190,7 @@
   color: #00E676 !important;
 }
 
-.green.accent-4, section.cursos a.accent-4:hover {
+.green.accent-4, section.cursos a.accent-4:hover, section.alunos a.accent-4:hover {
   background-color: #00C853 !important;
 }
 
@@ -1278,7 +1278,7 @@
   color: #33691e !important;
 }
 
-.light-green.accent-1, section.cursos a.light-green:hover {
+.light-green.accent-1, section.cursos a.light-green:hover, section.alunos a.light-green:hover {
   background-color: #ccff90 !important;
 }
 
@@ -1390,7 +1390,7 @@
   color: #827717 !important;
 }
 
-.lime.accent-1, section.cursos a.lime:hover {
+.lime.accent-1, section.cursos a.lime:hover, section.alunos a.lime:hover {
   background-color: #f4ff81 !important;
 }
 
@@ -1502,7 +1502,7 @@
   color: #f57f17 !important;
 }
 
-.yellow.accent-1, section.cursos a.yellow:hover {
+.yellow.accent-1, section.cursos a.yellow:hover, section.alunos a.yellow:hover {
   background-color: #ffff8d !important;
 }
 
@@ -1614,7 +1614,7 @@
   color: #ff6f00 !important;
 }
 
-.amber.accent-1, section.cursos a.amber:hover {
+.amber.accent-1, section.cursos a.amber:hover, section.alunos a.amber:hover {
   background-color: #ffe57f !important;
 }
 
@@ -1726,7 +1726,7 @@
   color: #e65100 !important;
 }
 
-.orange.accent-1, section.cursos a.orange:hover {
+.orange.accent-1, section.cursos a.orange:hover, section.alunos a.orange:hover {
   background-color: #ffd180 !important;
 }
 
@@ -1838,7 +1838,7 @@
   color: #bf360c !important;
 }
 
-.deep-orange.accent-1, section.cursos a.deep-orange:hover {
+.deep-orange.accent-1, section.cursos a.deep-orange:hover, section.alunos a.deep-orange:hover {
   background-color: #ff9e80 !important;
 }
 
@@ -2138,11 +2138,21 @@
   padding-top: 56px;
 }
 
-section.cursos {
+section.cursos, section.alunos {
   max-width: 600px;
 }
-section.cursos a {
+section.cursos a, section.alunos a {
   transition: 0.6s;
+}
+section.login {
+  padding: 0 2%;
+  position: absolute;
+  max-width: 500px;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
 
 /*# sourceMappingURL=pagina-inicial.css.map */

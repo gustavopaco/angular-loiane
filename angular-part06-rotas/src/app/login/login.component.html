@@ -1,2 +1,15 @@
-<h1>Ola LOGIN</h1>
-<p #elementoAsync>{{ login | async}}</p>
+<section class="login">
+<h1>Login:</h1>
+<div class="form-floating mb-3">
+  <input type="email" class="form-control" id="floatingInput" name="email" [(ngModel)]="usuario.email" placeholder="name@example.com">
+  <label for="floatingInput">Email address</label>
+</div>
+<div class="form-floating pb-2">
+  <input type="password" class="form-control" id="floatingPassword" name="senha" [(ngModel)]="usuario.senha" placeholder="Password">
+  <label for="floatingPassword">Password</label>
+</div>
+  <small class="small d-block green-text" *ngIf="isUserLogged">Usuario logado...Redirecionando</small>
+  <small class="small d-block red-text" *ngIf="(isUserLogged === false)">Usuario ou senha invalidos</small>
+  <button type="button" class="btn btn-lg btn-primary mt-2" (click)="doLogin()">Login</button>
+</section>
+<!--<p #elementoAsync>{{ login | async}}</p>-->

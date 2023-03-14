@@ -1,0 +1,12 @@
+<div class="row">
+  <section class=" alunos col-md-6">
+    <h2>Lista de Alunos</h2>
+    <div class="list-group py-2">
+      <a class="list-group-item list-group-item-action" [routerLink]="['/alunos/', i.id]" *ngFor="let i of alunos">{{ i.nome }}</a>
+    </div>
+  </section>
+  <!--<button class="btn btn-primary" (click)="showAlunosForm()">Cadastrar Aluno</button>-->
+  <div class="col-md-6">
+    <router-outlet></router-outlet>
+  </div><!--col-->
+</div><!--row-->

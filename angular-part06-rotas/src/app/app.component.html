@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" *ngIf="mostrarMenu">
   <div class="container">
     <a class="navbar-brand cursor-pointer" [routerLink]="['/']">Navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -9,6 +9,9 @@
       <ul class="navbar-nav ms-auto text-center">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/cursos/']" [queryParams]="{pagina:1, user: 'logado'}" [routerLinkActive]="'active'">Cursos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/alunos']" [routerLinkActive]="'active'">Alunos</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/login']" [routerLinkActive]="'active'">Login</a>

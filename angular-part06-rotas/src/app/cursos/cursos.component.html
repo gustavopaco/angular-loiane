@@ -2,7 +2,7 @@
   <h2>Cursos:</h2>
   <p>Página: {{ pagina }}</p>
 <div class="list-group py-2">
-  <a class="list-group-item list-group-item-action" [routerLink]="['/curso/',i.id]" *ngFor="let i of cursos">{{ i.nome }}</a>
+  <a class="list-group-item list-group-item-action" [routerLink]="[i.id]" *ngFor="let i of cursos">{{ i.nome }}</a>
 </div>
   <button class="btn btn-primary my-2" (click)="proximaPagina()">Proxima Página</button>
 </section>

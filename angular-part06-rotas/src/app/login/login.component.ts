@@ -1,24 +1,40 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import * as $ from 'jquery'
+import {Component, OnInit} from '@angular/core';
+// import * as $ from 'jquery'
+import {AuthService} from "../shared/auth.service";
+import {Usuario} from "../model/usuario";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [
+  styleUrls: [ '../../vendor/css/pagina-inicial.min.css'
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
-  @ViewChild('elementoAsync') el?: ElementRef;
+  // Note: Exemplo de Chamada Asyncrona sendo aplicada evento JQuery "fadeIn"
+  // @ViewChild('elementoAsync') el?: ElementRef;
+
+  // login = new Promise<string>(resolve => setTimeout(() => {
+  //
+  //   $("p").css("display","none").fadeIn();
+  //
+  //   return resolve("login funcionando")
+  //
+  // }, 2000))
 
 
+  usuario: Usuario = new Usuario();
+  isUserLogged?: boolean = undefined;
 
-  login = new Promise<string>(resolve => setTimeout(() => {
+  constructor(private authService: AuthService) {
+  }
 
-    $("p").css("display","none").fadeIn();
+  ngOnInit(): void {
+  }
 
-    return resolve("login funcionando")
 
-  }, 2000))
+  doLogin(): void {
+    this.authService.doLogin(this.usuario).then(response => this.isUserLogged = response);
 
+  }
 }

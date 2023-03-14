@@ -3,8 +3,8 @@ import {HomeComponent} from "./home/home.component";
 import {LoginComponent} from "./login/login.component";
 import {CursosComponent} from "./cursos/cursos.component";
 import {ModuleWithProviders} from "@angular/core";
-import {CursoDetalheComponent} from "./curso-detalhe/curso-detalhe.component";
-import {CursoNotFoundComponent} from "./curso-not-found/curso-not-found.component";
+import {CursoDetalheComponent} from "./cursos/curso-detalhe/curso-detalhe.component";
+import {CursoNotFoundComponent} from "./cursos/curso-not-found/curso-not-found.component";
 
 const APP_ROUTES: Routes = [
 

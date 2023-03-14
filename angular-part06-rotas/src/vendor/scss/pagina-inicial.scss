@@ -9,7 +9,7 @@
   padding-top: 56px;
 }
 
-section.cursos {
+section.cursos, section.alunos {
   max-width: 600px;
 
   a{
@@ -19,4 +19,15 @@ section.cursos {
       @extend .green, .accent-1;
     }
   }
+}
+
+section.login {
+  padding: 0 2%;
+  position: absolute;
+  max-width: 500px;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
 }
