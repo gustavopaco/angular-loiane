@@ -3,19 +3,19 @@
   <div class="row g-3">
     <div class="col-md-12">
       <div class="form-floating">
-        <input class="form-control" type="text" name="id" id="idAluno" readonly disabled placeholder="Id do aluno" [(ngModel)]="aluno.id">
+        <input class="form-control" type="text" name="id" id="idAluno" readonly disabled placeholder="Id do aluno" [(ngModel)]="aluno && aluno.id">
         <label for="idAluno">#id</label>
       </div>
     </div><!--col-->
     <div class="col-md-12">
       <div class="form-floating">
-        <input class="form-control" type="text" name="nomeAluno" id="nomeAluno" placeholder="Nome do aluno" [(ngModel)]="aluno.nome">
+        <input class="form-control" type="text" name="nomeAluno" id="nomeAluno" placeholder="Nome do aluno" [(ngModel)]="aluno && aluno.nome" (input)="alterouForm()">
         <label for="nomeAluno">Nome</label>
       </div>
     </div><!--col-->
     <div class="col-md-12">
       <div class="form-floating">
-        <input class="form-control" type="email" name="email" id="emailAluno" placeholder="Email do aluno" [(ngModel)]="aluno.email">
+        <input class="form-control" type="email" name="email" id="emailAluno" placeholder="Email do aluno" [(ngModel)]="aluno && aluno.email" (input)="alterouForm()">
         <label for="emailAluno">Email:</label>
       </div>
     </div><!--col-->

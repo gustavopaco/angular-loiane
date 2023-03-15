@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 // import * as $ from 'jquery'
-import {AuthService} from "../shared/auth.service";
-import {Usuario} from "../model/usuario";
+import {AuthService} from "../shared/service/auth.service";
+import {Usuario} from "../shared/model/usuario";
 
 @Component({
   selector: 'app-login',

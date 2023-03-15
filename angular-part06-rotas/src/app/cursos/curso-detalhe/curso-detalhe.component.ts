@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {CursosService} from "../../shared/cursos.service";
+import {CursosService} from "../../shared/service/cursos.service";
 
 @Component({
   selector: 'app-curso-detalhe',
@@ -27,7 +27,7 @@ export class CursoDetalheComponent implements OnInit, OnDestroy{
   getCursoDetalhe(): void {
     this.curso = this.cursosService.findCurso(Number(this.id));
     if (this.curso == undefined) {
-      this.router.navigate(["/cursos/naoEncontrado/", this.id]).then(() => ["/"])
+      this.router.navigate(["/cursos/naoEncontrado/", this.id])
     }
   }
 

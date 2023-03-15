@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AlunosService} from "../shared/alunos.service";
+import {AlunosService} from "../shared/service/alunos.service";
+import {Aluno} from "../shared/model/aluno";
 
 @Component({
   selector: 'app-alunos',
@@ -12,7 +13,7 @@ export class AlunosComponent implements OnInit{
   isShowAlunos: boolean = true;
   isShowAlunosForm: boolean = false;
 
-  alunos: any[]= []
+  alunos: Aluno[]= []
   constructor(private alunosService: AlunosService) {
   }
 

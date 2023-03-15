@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "./shared/auth.service";
+import {AuthService} from "./shared/service/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,12 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.mostrarMenu = this.authService.isUserLogged();
     this.authService.mostrarMenuEmitter.subscribe((response: any) => setTimeout(() => this.mostrarMenu = response,3000))
   }
 
+  invalidarSessao() {
+    this.mostrarMenu = false;
+    this.authService.invalidadeSession();
+  }
 }

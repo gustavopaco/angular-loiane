@@ -13,8 +13,11 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/alunos']" [routerLinkActive]="'active'">Alunos</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!mostrarMenu">
           <a class="nav-link" [routerLink]="['/login']" [routerLinkActive]="'active'">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link cursor-pointer" (click)="invalidarSessao()">Logout</a>
         </li>
       </ul>
     </div>

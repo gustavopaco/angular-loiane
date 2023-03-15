@@ -7,7 +7,6 @@ import {Router} from "@angular/router";
 })
 export class AuthService {
 
-  private usuarioAutenticado?: boolean;
   mostrarMenuEmitter = new EventEmitter<boolean>();
 
   constructor(private router: Router) {
@@ -15,17 +14,23 @@ export class AuthService {
 
   async doLogin(usuario: Usuario): Promise<boolean> {
     if (usuario.email == "usuario@gmail.com" && usuario.senha == "123456") {
-      this.mostrarMenuEmitter.emit(true);
-      this.usuarioAutenticado = true;
+      sessionStorage.setItem("usuarioLogado", "true");
+      this.mostrarMenuEmitter.emit(this.isUserLogged());
       setTimeout(() => this.router.navigate(["/"]), 3000)
       return true
     }
-    this.mostrarMenuEmitter.emit(false);
-    this.usuarioAutenticado = false;
+    this.mostrarMenuEmitter.emit(this.isUserLogged());
     return false;
   }
 
   isUserLogged(): boolean {
-    return <boolean>this.usuarioAutenticado;
+    return  sessionStorage.getItem("usuarioLogado") != undefined;
+    // return <boolean>this.usuarioAutenticado;
+  }
+
+  invalidadeSession(): void {
+    sessionStorage.clear();
+    this.mostrarMenuEmitter.emit(this.isUserLogged());
+    this.router.navigate(["/login"]);
   }
 }

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
-import {CursosService} from "../shared/cursos.service";
+import {CursosService} from "../shared/service/cursos.service";
 import {Subscription} from "rxjs";
 
 @Component({

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {CursosComponent} from "./cursos.component";
 import {CursoDetalheComponent} from "./curso-detalhe/curso-detalhe.component";
 import {CursoNotFoundComponent} from "./curso-not-found/curso-not-found.component";
@@ -13,7 +13,7 @@ const cursosRoutes: Routes = [
   { path: "naoEncontrado/:id", component: CursoNotFoundComponent },
 
   /*Note: Passando parametro ":id" na URL de Curso para o Componente CursoDetalheComponent*/
-  { path: ":id", component: CursoDetalheComponent },
+  { path: ":id", component: CursoDetalheComponent},
 
 ];
 
