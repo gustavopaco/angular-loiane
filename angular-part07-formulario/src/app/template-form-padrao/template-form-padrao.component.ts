@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
 import {Usuario} from "../shared/model/usuario";
 import {BsLocaleService} from "ngx-bootstrap/datepicker";
 import {defineLocale, ptBrLocale} from "ngx-bootstrap/chronos";
 import {ConsultaCepViacepService} from "../shared/service/consulta-cep-viacep.service";
 import {Subscription} from "rxjs";
+import {EnvioDadosWebserviceService} from "../shared/service/envio-dados-webservice.service";
 
 defineLocale('pt-br', ptBrLocale)
 
@@ -15,7 +16,7 @@ defineLocale('pt-br', ptBrLocale)
     '../../assets/css/pagina-inicial.min.css'
   ]
 })
-export class TemplateFormPadraoComponent implements OnInit, AfterViewInit {
+export class TemplateFormPadraoComponent implements OnInit, OnDestroy {
   disabledDates = [
     new Date(2023, 2, 12),
     new Date(2023, 2, 14)
@@ -23,15 +24,15 @@ export class TemplateFormPadraoComponent implements OnInit, AfterViewInit {
 
   usuario: Usuario = new Usuario();
   inscricao?: Subscription;
+  inscricao2?: Subscription;
 
   @ViewChild('formElement') formulario?: NgForm
-  constructor(private localeService: BsLocaleService, private consultaCepService: ConsultaCepViacepService) {
+  constructor(private localeService: BsLocaleService, private consultaCepService: ConsultaCepViacepService, private envioDadosService: EnvioDadosWebserviceService) {
     localeService.use('pt-br');
   }
 
   onSubmit(formElement: NgForm) {
-    console.log(formElement);
-
+    this.inscricao2 = this.envioDadosService.enviarDados(JSON.stringify(formElement.value)).subscribe(response => console.log(response));
   }
 
   ngOnInit(): void {
@@ -97,9 +98,8 @@ export class TemplateFormPadraoComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit(): void {
-
-    // console.log(this.formulario?.form)
+  ngOnDestroy(): void {
+    this.inscricao?.unsubscribe();
+    this.inscricao2?.unsubscribe();
   }
-
 }
