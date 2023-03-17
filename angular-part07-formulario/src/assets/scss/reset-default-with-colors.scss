@@ -1,0 +1,37 @@
+@import "color-variables";
+@import "color-classes";
+
+/*Reset Documento*/
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,body {
+  height: 100%;
+}
+
+.cursor-pointer {
+  cursor:pointer
+}
+
+
+/*Note: Fix NgxBootstrap Tooltip*/
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0 #{"/* rtl:ignore */"};
+}
+
+.popover-arrow {
+  position: absolute;
+}
+
+.tooltip {
+  position: absolute;
+}
+
+.tooltip-arrow {
+  position: absolute;
+}

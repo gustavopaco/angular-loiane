@@ -1,0 +1,129 @@
+<section class="template-form">
+  <h2 class="py-2">Template Form(Padrão)</h2>
+  <form [noValidate]="true" action="#" #formElement="ngForm" (ngSubmit)="onSubmit(formElement)">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="nome" name="nome" #nome="ngModel"
+                 [(ngModel)]="usuario && usuario.nome"
+                 [ngClass]="validatorNgClass(nome,formElement)"
+                 placeholder="Informe seu nome" required minlength="3">
+          <label for="nome"
+                 [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(nome,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(nome, formElement) ? '*Nome obrigatório' : 'Nome' }}</label>
+          <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(nome,formElement)">Campo
+            Invalido</small>
+        </div>
+      </div><!--col-->
+    </div><!--row-->
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <div class="form-floating ">
+          <input type="email" class="form-control" id="email" name="email" #email="ngModel"
+                 [(ngModel)]="usuario && usuario.email"
+                 [ngClass]="validatorNgClass(email, formElement)"
+                 required placeholder="Informe seu e-mail">
+<!--          <app-formulario-floating-framework [formulario]="formElement" [inputModel]="email" [labelName]="'email'"-->
+<!--                                             [labelMessage]="'E-mail'"></app-formulario-floating-framework>-->
+                    <label for="email"
+                           [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(email, formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(email, formElement) ? '*E-mail obrigatório' : 'E-mail' }}</label>
+                    <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(email,formElement)">Campo
+                      Invalido</small>
+        </div>
+      </div><!--col-->
+    </div><!--row-->
+    <div ngModelGroup="endereco">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="cep" name="cep" #cep="ngModel"
+                   [(ngModel)]="usuario && usuario.cep"
+                   [ngClass]="validatorNgClass(cep, formElement)"
+                   (blur)="consultaCep($event, formElement)"
+                   required placeholder="Informe seu Cep">
+            <label for="cep"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(cep, formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(cep, formElement) ? '*Cep obrigatório' : 'Cep' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(cep, formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+        <div class="col-md-3 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="numero" name="numero" #numero="ngModel"
+                   [(ngModel)]="usuario && usuario.numero"
+                   [ngClass]="validatorNgClass(numero, formElement)"
+                   required placeholder="Informe o Número da casa">
+            <label for="numero"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(numero,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(numero, formElement) ? '*Número obrigatório' : 'Número da casa' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(numero,formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+        <div class="col-md-6 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="complemento" name="complemento" [(ngModel)]="usuario && usuario.complemento"
+                   placeholder="Complemento">
+            <label for="complemento">Complemento</label>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="rua" name="rua" #rua="ngModel"
+                   [(ngModel)]="usuario && usuario.rua"
+                   [ngClass]="validatorNgClass(rua, formElement)"
+                   required placeholder="Informe a Rua">
+            <label for="rua"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(rua,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(rua, formElement) ? '*Rua obrigatório' : 'Rua' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(rua,formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="bairro" name="bairro" #bairro="ngModel"
+                   [(ngModel)]="usuario && usuario.bairro"
+                   [ngClass]="validatorNgClass(bairro, formElement)"
+                   required placeholder="Informe o Bairro">
+            <label for="bairro"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(bairro,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(bairro, formElement) ? '*Bairro obrigatório' : 'Bairro' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(bairro,formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+        <div class="col-md-4 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="cidade" name="cidade" #cidade="ngModel"
+                   [(ngModel)]="usuario && usuario.cidade"
+                   [ngClass]="validatorNgClass(cidade, formElement)"
+                   required placeholder="Informe a Cidade">
+            <label for="cidade"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(cidade,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(cidade, formElement) ? '*Cidade obrigatório' : 'Cidade' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(cidade,formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+        <div class="col-md-3 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="estado" name="estado" #estado="ngModel"
+                   [(ngModel)]="usuario && usuario.estado"
+                   [ngClass]="validatorNgClass(estado, formElement)"
+                   required placeholder="Informe o Estado">
+            <label for="estado"
+                   [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(estado,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(estado, formElement) ? '*Estado obrigatório' : 'Estado' }}</label>
+            <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(estado,formElement)">Campo
+              Invalido</small>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+    </div><!--modelGroup-->
+    <button type="submit" class="btn btn-primary btn-lg my-2">Enviar</button>
+  </form>
+
+  <app-formulario-debugg [formularioForDebug]="formElement"></app-formulario-debugg>
+
+</section><!--section-template-form-->
+
+
