@@ -12,7 +12,6 @@ export class ConsultaCepViacepService {
   consultaCEP(cep: string) : Observable<any> | undefined {
     let cepFormatado = this.formataCep(cep);
     if (cepFormatado != '') {
-      console.log("Entrou" + cepFormatado)
       return this.conexao.get(`//viacep.com.br/ws/${cepFormatado}/json`);
     }
     return undefined;

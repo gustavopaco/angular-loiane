@@ -1,1 +1,94 @@
-<p>data-form-reativo works!</p>
+<section class="data-form">
+  <h2 class="py-2">Data Form(Reativo)</h2>
+    <form [noValidate]="true" action="#" [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="nome" name="nome" formControlName="nome"
+                   [ngClass]="validateNgClass('nome')"
+                   placeholder="Informe seu nome">
+            <label for="nome">Nome</label>
+            <small class="invalid-feedback">Campo Invalido</small>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <div class="form-floating ">
+            <input type="email" class="form-control" id="email" formControlName="email"
+                   [ngClass]="validateNgClass('email')"
+                   placeholder="Informe seu e-mail">
+            <!--          <app-formulario-floating-framework [formulario]="formElement" [inputModel]="email" [labelName]="'email'"-->
+            <!--                                             [labelMessage]="'E-mail'"></app-formulario-floating-framework>-->
+            <label for="email">E-mail</label>
+            <small class="invalid-feedback">{{ validateEmailInvalid('email') }}</small>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="cep" formControlName="cep" placeholder="Informe seu Cep">
+              <label for="cep">Cep</label>
+              <small class="invalid-feedback">Campo
+                Invalido</small>
+            </div>
+          </div><!--col-->
+          <div class="col-md-3 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="numero" name="numero" placeholder="Informe o Número da casa">
+              <label for="numero">Número</label>
+              <small class="invalid-feedback">Campo
+                Invalido</small>
+            </div>
+          </div><!--col-->
+          <div class="col-md-6 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="complemento" name="complemento" placeholder="Complemento">
+              <label for="complemento">Complemento</label>
+            </div>
+          </div><!--col-->
+        </div><!--row-->
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="rua" name="rua" placeholder="Informe a Rua">
+              <label for="rua">Rua</label>
+              <small class="invalid-feedback">Campo Invalido</small>
+            </div>
+          </div><!--col-->
+        </div><!--row-->
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Informe o Bairro">
+              <label for="bairro">Bairro</label>
+              <small class="invalid-feedback">Campo Invalido</small>
+            </div>
+          </div><!--col-->
+          <div class="col-md-4 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Informe a Cidade">
+              <label for="cidade">Cidade</label>
+              <small class="invalid-feedback">Campo
+                Invalido</small>
+            </div>
+          </div><!--col-->
+<!--          <div class="col-md-3 mb-3">-->
+<!--            <div class="form-floating">-->
+<!--              <input type="text" class="form-control" id="estado" name="estado" #estado="ngModel"-->
+<!--                     [(ngModel)]="usuario && usuario.estado"-->
+<!--                     [ngClass]="validatorNgClass(estado, formElement)"-->
+<!--                     required placeholder="Informe o Estado">-->
+<!--              <label for="estado"-->
+<!--                     [class.invalid-feedback]="validatorNgIfNgClassPropertyBindingSubmitted(estado,formElement)">{{ validatorNgIfNgClassPropertyBindingDirtyOrSubmitted(estado, formElement) ? '*Estado obrigatório' : 'Estado' }}</label>-->
+<!--              <small class="invalid-feedback" *ngIf="validatorNgIfNgClassPropertyBindingSubmitted(estado,formElement)">Campo-->
+<!--                Invalido</small>-->
+<!--            </div>-->
+<!--          </div>&lt;!&ndash;col&ndash;&gt;-->
+        </div><!--row-->
+      <button type="submit" class="btn btn-primary btn-lg my-2">Enviar</button>
+    </form>
+
+    <app-formulario-debugg [formularioReativoDebug]="formulario"></app-formulario-debugg>
+</section>

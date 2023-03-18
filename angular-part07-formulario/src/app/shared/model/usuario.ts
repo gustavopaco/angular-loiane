@@ -1,6 +1,8 @@
+import {Endereco} from "./endereco";
+
 export class Usuario {
 
-  nome?: string;
+  nome: string = '';
   email?: string;
   cep?: string;
   numero?: string;
@@ -9,4 +11,6 @@ export class Usuario {
   bairro?: string;
   cidade?: string;
   estado?: string;
+
+  endereco: Endereco = new Endereco();
 }

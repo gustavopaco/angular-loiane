@@ -10,12 +10,12 @@ import {
   ViewChild
 } from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
-import {FormValidatorService} from "../shared/service/form-validator.service";
+import {FormValidatorService} from "../../service/form-validator.service";
 
 @Component({
   selector: 'app-formulario-floating-framework',
   templateUrl: './formulario-floating-framework.component.html',
-  styleUrls: [ '../../assets/css/pagina-inicial.min.css'
+  styleUrls: [ '../../../../assets/css/pagina-inicial.min.css'
   ],
 
 })

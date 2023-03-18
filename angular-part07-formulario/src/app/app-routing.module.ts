@@ -1,14 +1,15 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TemplateFormPadraoComponent} from "./template-form-padrao/template-form-padrao.component";
 import {DataFormReativoComponent} from "./data-form-reativo/data-form-reativo.component";
+import {TemplateFormPadraoComponent} from "./template-form-padrao/template-form-padrao.component";
 
 const routes: Routes = [
-  { path: 'template', component: TemplateFormPadraoComponent },
 
   { path: 'data', component: DataFormReativoComponent },
 
-  { path: '', redirectTo: 'template', pathMatch: 'full' }
+  { path: 'template', component: TemplateFormPadraoComponent },
+
+  { path: '', redirectTo: 'data', pathMatch: 'full' }
 ];
 
 @NgModule({
