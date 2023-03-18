@@ -2,7 +2,7 @@ import {Endereco} from "./endereco";
 
 export class Usuario {
 
-  nome: string = '';
+  nome?: string;
   email?: string;
   cep?: string;
   numero?: string;

@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
-import {FormValidatorService} from "../../service/form-validator.service";
+import {FormTemplateValidatorService} from "../../service/form-template-validator.service";
 
 @Component({
   selector: 'app-formulario-floating-framework',
@@ -33,7 +33,7 @@ export class FormularioFloatingFrameworkComponent implements OnInit, AfterConten
   validatorNgClass?: string;
 
 
-  constructor(private formValidatorService: FormValidatorService, private changeDetector: ChangeDetectorRef, private render: Renderer2, private elementRef: ElementRef) {
+  constructor(private formValidatorService: FormTemplateValidatorService, private changeDetector: ChangeDetectorRef, private render: Renderer2, private elementRef: ElementRef) {
     this.label = this.elementRef;
     if (this.inputModel && this.formulario) {
       this.validatorNgClass = this.formValidatorService.validatorNgClass(this.inputModel, this.formulario)

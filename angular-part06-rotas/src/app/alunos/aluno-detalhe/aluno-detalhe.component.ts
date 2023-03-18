@@ -24,6 +24,7 @@ export class AlunoDetalheComponent implements OnInit, OnDestroy{
     //   this.aluno = this.alunosService.findAluno(Number(this.pathVariable));
     // });
 
+    /*Note: Chamando dados da Guarda e Rota Resolver*/
     this.inscricao = this.activatedRoute.data.subscribe( response => this.aluno = response['aluno']);
 
   }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgForm, NgModel} from "@angular/forms";
 import {Usuario} from "../shared/model/usuario";
 import {BsLocaleService} from "ngx-bootstrap/datepicker";
