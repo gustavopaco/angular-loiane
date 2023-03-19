@@ -15,11 +15,20 @@ export class DropdownService {
     return this.httpClient.get(this.URL)
   }
 
-  getCargos() {
+  getCargos(): any[] {
     return [
       {nome: 'Dev', nivel: 'Junior', desc: 'Dev Jr'},
       {nome: 'Dev', nivel: 'Pleno', desc: 'Dev Pleno'},
       {nome: 'Dev', nivel: 'Senior', desc: 'Dev Senior'}
     ]
+  }
+
+  getTecnologias(): any[] {
+    return [
+      {nome: "java", desc: "Java"},
+      {nome: "javascript", desc: "Javascript"},
+      {nome: "php", desc: "PHP"},
+      {nome: "ruby", desc: "Ruby"},
+    ];
   }
 }

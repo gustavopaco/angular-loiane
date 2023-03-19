@@ -12,7 +12,7 @@ import {Estado} from "../shared/model/estado";
 @Component({
   selector: 'app-data-form-reativo',
   templateUrl: './data-form-reativo.component.html',
-  styles: []
+  styleUrls: ['../../assets/css/pagina-inicial.min.css']
 })
 export class DataFormReativoComponent implements OnInit, OnDestroy {
 
@@ -24,6 +24,8 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   // estados: any[] = [];
   estados?: Observable<any>;
   cargos: any[] = [];
+  tecnologias: any[] = [];
+
   inscricao?: Subscription;
   inscricao2?: Subscription;
   inscricao3?: Subscription;
@@ -43,6 +45,7 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     this.mapearFormParaObjeto();
     this.carregarEstados();
     this.carregarCargos();
+    this.carregarTecnologias();
     this.criandoFormBuilderReativo2();
   }
 
@@ -60,7 +63,8 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
         cidade: [this.usuario.endereco.cidade, Validators.required],
         estado: [this.usuario.endereco.estado, Validators.required],
       }),
-      cargo: [null]
+      cargo: [null, Validators.required],
+      tecnologias: [null, Validators.required]
     })
   }
 
@@ -131,74 +135,154 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     })
   }
 
-  buscarEstado($event: Event) {
+  buscarEstado($event: Event): void {
     console.log($event.target ? (<HTMLSelectElement>$event.target).value : '')
   }
 
-  carregarCargos() {
+  carregarCargos(): void {
     this.cargos = this.dropDownService.getCargos();
   }
 
   compararObjetos(obj1: any, obj2: any): boolean {
-    return (obj1 && obj2) ? (obj1.nivel === obj2.nivel && obj1.desc === obj2.desc) : (obj1 === obj2);
+    return (obj1 && obj2) ? (obj1.nome === obj2.nome && obj1.desc === obj2.desc) : (obj1 === obj2);
   }
 
-  carregarCargoSelecionado() {
+  carregarCargoSelecionado(): void {
     console.log(this.formulario.get('cargo')?.value)
   }
 
-  setarCargo() {
+  setarCargo(): void {
     const cargo = {nome: 'Dev', nivel: 'Pleno', desc: 'Dev Pleno'}
     this.formulario.get("cargo")?.patchValue(cargo)
   }
-  /*Fim -> Form 1*/
 
-  /*xxx-----------------------------------------------------------------*/
-
-  /*Inicio -> Form 2*/
-  criandoFormBuilderReativo2() {
-    this.formularioEstado = this.formularioBuilder.group({
-      id: [this.estado.id],
-      sigla: [this.estado.sigla],
-      nome: [this.estado.nome]
-    })
-  }
-  buscarEstadosAPI() {
-    this.dropDownService.getEstadosBR().subscribe(response => {
-      this.formularioEstado.patchValue(response[0])
-    })
-  }
-  /*Fim -> Form 2*/
-
-  validatorNgClassInput(input: string): string {
-    return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(input)));
+  carregarTecnologias(): void {
+    this.tecnologias = this.dropDownService.getTecnologias();
   }
 
-  validatorNgClassLabel(input: string): string {
-    return this.formValidatorService.validateNgClassLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)))
+  carregarTecnologiaSelecionado(): void {
+    console.log(this.formulario.get("tecnologias")?.value)
   }
 
-  validatorLabelValue(input: string, defaultMessage: string): string {
-    return this.formValidatorService.validateInterpolationLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)), defaultMessage)
-  }
+  setarTecnologias(): void {
+    let tecnologias = [{nome: "php", desc: "PHP"}, {nome: "java", desc: "Java"}, {nome: "ruby", desc: "Ruby"}];
+    this.formulario.get("tecnologias")?.patchValue(tecnologias)
 
-  validatorEmailInvalid(input: string): string {
-    return this.formValidatorService
-      .validateIsMailInvalidMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-  }
+    // Note: Algoritmo p/ verificar se dado de uma lista nao existe na lista atual, se nao incluir na lista
+    // let formTecnologias: [] = (this.formulario.get("tecnologias")?.value)
+    // if (formTecnologias.length > 0) {
+    // Note: Algoritmo utilizando ForEach
+    // formTecnologias.forEach(formTec => {
+    //   let tecnologiaExiste: boolean = false;
+    //   tecnologias.forEach(t => {
+    //     if (formTec['nome'] === t['nome']) {
+    //       tecnologiaExiste = true;
+    //     }
+    //   })
+    //   if (!tecnologiaExiste) {
+    //     tecnologias.push(formTec);
+    //   }
+    // })
+    // Note: Algoritmo utilizando For i
+    // for (let i = 0; i < formTecnologias.length; i++) {
+    //   let isTecnologiaExiste: boolean = false;
+    //   for (let j = 0; j < tecnologias.length; j++) {
+    //     if (tecnologias[j]['nome'] === formTecnologias[i]['nome']) {
+    //       isTecnologiaExiste = true
+    //     }
+    //   }
+    //   if (!isTecnologiaExiste) {
+    //     tecnologias.push(formTecnologias[i])
+    //   }
+    // }
+    // Note: Setando valor no formulario
+    // this.formulario.get("tecnologias")?.patchValue(tecnologias)
+  // }
+}
 
-  validatorCepInvalid(input: string): string {
-    // return this.formValidatorService.validateIsMinLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-    // return this.formValidatorService.validateIsMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-    return this.formValidatorService
-      .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
-  }
+/*Fim -> Form 1*/
+
+/*xxx-----------------------------------------------------------------*/
+
+/*Inicio -> Form 2*/
+criandoFormBuilderReativo2()
+:
+void {
+  this.formularioEstado = this.formularioBuilder.group({
+    id: [this.estado.id],
+    sigla: [this.estado.sigla],
+    nome: [this.estado.nome]
+  })
+}
+
+buscarEstadosAPI()
+:
+void {
+  this.dropDownService.getEstadosBR().subscribe(response => {
+    this.formularioEstado.patchValue(response[0])
+  })
+}
+
+/*Fim -> Form 2*/
+
+validatorNgClassInput(input
+:
+string
+):
+string
+{
+  return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(input)));
+}
+
+validatorNgClassLabel(input
+:
+string
+):
+string
+{
+  return this.formValidatorService.validateNgClassLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)))
+}
+
+validatorLabelValue(input
+:
+string, defaultMessage
+:
+string
+):
+string
+{
+  return this.formValidatorService.validateInterpolationLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)), defaultMessage)
+}
+
+validatorEmailInvalid(input
+:
+string
+):
+string
+{
+  return this.formValidatorService
+    .validateIsMailInvalidMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+}
+
+validatorCepInvalid(input
+:
+string
+):
+string
+{
+  // return this.formValidatorService.validateIsMinLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+  // return this.formValidatorService.validateIsMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+  return this.formValidatorService
+    .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
+}
 
 
-  ngOnDestroy(): void {
-    this.inscricao?.unsubscribe();
-    this.inscricao2?.unsubscribe();
-    this.inscricao3?.unsubscribe();
-    this.inscricao4?.unsubscribe();
-  }
+ngOnDestroy()
+:
+void {
+  this.inscricao?.unsubscribe();
+  this.inscricao2?.unsubscribe();
+  this.inscricao3?.unsubscribe();
+  this.inscricao4?.unsubscribe();
+}
 }
