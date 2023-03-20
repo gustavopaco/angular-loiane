@@ -35,6 +35,10 @@ export class DropdownService {
     ];
   }
 
+  getLinguas(): string[] {
+    return ["Portugues", "Inglês", "Espanhol", "Mandarim", "Italiano"]
+  }
+
   getNewsLetter(): any[] {
     return [
       { valor: 's', desc: 'Sim'},

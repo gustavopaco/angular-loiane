@@ -119,6 +119,15 @@
         </div><!--col-->
       </div><!--row-->
       <div class="row">
+          <label class="d-block text-center mb-3">Linguas fluentes</label>
+        <div class="col-md-3 mb-3" formArrayName="linguas" *ngFor="let lingua of linguas.controls; index as i">
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="{{'lingua'+i}}" [formControlName]="i">
+            <label class="form-check-label" for="{{'lingua'+i}}">{{ loadLinguas()[i] }}</label>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="row">
         <div class="col-md-3 mb-3">
           <label class="d-block">Newsletter</label>
           <div class="form-check form-check-inline" *ngFor="let newsletter of newsletters; index as i">
@@ -128,24 +137,26 @@
           </div>
         </div><!--col-->
       </div><!--row-->
-      <div class="col-md-3 mb-3">
-        <label class="d-block">Termos</label>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="termos" formControlName="termos"
-                 [ngClass]="validatorNgClassInput('termos')">
-          <label class="form-check-label" for="termos">Aceito os termos</label>
-          <small class="invalid-feedback">Campo Inválido</small>
-        </div>
-      </div><!--col-->
-      <label class="d-block py-2 text-center">Frameworks</label>
       <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="d-block">Termos</label>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="termos" formControlName="termos"
+                   [ngClass]="validatorNgClassInput('termos')">
+            <label class="form-check-label" for="termos">Aceito os termos</label>
+            <small class="invalid-feedback">Campo Inválido</small>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="row">
+        <label class="d-block py-2 text-center">Frameworks</label>
         <div class="col-sm-6 col-md-3 mb-4" formArrayName="frameworks"
              *ngFor="let frameworkForm of frameworks.controls ; index as i">
           <div [formGroupName]="i">
-            <div class="mb-2">
-              <label for="{{ 'frameworkName'+i }}">Nome</label>
-              <input type="text" class="form-control" id="{{ 'frameworkName'+i }}" formControlName="nome">
-            </div><!--col-->
+            <!--            <div class="mb-2">-->
+            <!--              <label for="{{ 'frameworkName'+i }}">Nome</label>-->
+            <!--              <input type="text" class="form-control" id="{{ 'frameworkName'+i }}" formControlName="nome">-->
+            <!--            </div>-->
             <div class="form-check form-check-inline">
               <input type="checkbox" class="form-check-input" id="{{ 'framework'+i }}" formControlName="stats">
               <label class="form-check-label"
@@ -157,31 +168,32 @@
       </div><!--row-->
       <div class="row">
         <div class="col-md-12" formArrayName="telefones" *ngFor="let telefoneForm of telefones?.controls ; index as j">
-            <div class="row" [formGroupName]="j">
-              <div class="form-floating col-md-3 mb-3">
-                <input type="text" class="form-control" id="{{'input'+j}}" formControlName="numero"
-                [ngClass]="validatorNgClassInputFormArray('numero', telefoneForm)">
-                <label for="{{'input'+j}}">Número</label>
-                <small class="invalid-feedback">Campo Inválido</small>
-              </div>
-              <div class="form-floating col-md-3 mb-3">
-                <select class="form-select" id="{{'select'+j}}" formControlName="tipoTelefone"
-                [ngClass]="validatorNgClassInputFormArray('tipoTelefone', telefoneForm)">
-                  <option ngValue="CELULAR">CELULAR</option>
-                  <option ngValue="CASA">CASA</option>
-                  <option ngValue="TRABALHO">TRABALHO</option>
-                </select>
-                <label for="{{'select'+j}}">Tipo de Telefone</label>
-                <small class="invalid-feedback">Campo Inválido</small>
-              </div>
-              <div class="col-md-3 mb-3 align-self-center">
-                <button type="button" class="btn btn-danger" (click)="removeTelefone(j)">Deletar</button>
-              </div><!--col-->
-            </div><!--row-->
+          <div class="row" [formGroupName]="j">
+            <div class="form-floating col-md-3 mb-3">
+              <input type="text" class="form-control" id="{{'input'+j}}" formControlName="numero"
+                     [ngClass]="validatorNgClassInputFormArray('numero', telefoneForm)">
+              <label for="{{'input'+j}}">Número</label>
+              <small class="invalid-feedback">Campo Inválido</small>
+            </div>
+            <div class="form-floating col-md-3 mb-3">
+              <select class="form-select" id="{{'select'+j}}" formControlName="tipoTelefone"
+                      [ngClass]="validatorNgClassInputFormArray('tipoTelefone', telefoneForm)">
+                <option ngValue="CELULAR">CELULAR</option>
+                <option ngValue="CASA">CASA</option>
+                <option ngValue="TRABALHO">TRABALHO</option>
+              </select>
+              <label for="{{'select'+j}}">Tipo de Telefone</label>
+              <small class="invalid-feedback">Campo Inválido</small>
+            </div>
+            <div class="col-md-3 mb-3 align-self-center">
+              <button type="button" class="btn btn-danger" (click)="removeTelefone(j)">Deletar</button>
+            </div><!--col-->
+          </div><!--row-->
         </div><!--col-->
       </div><!--row-->
       <button type="submit" class="btn btn-primary btn-lg m-2">Enviar</button>
-      <button type="button" class="btn btn-primary m-2" (click)="addFramework()">Add Framework</button>
+      <button type="button" class="btn btn-primary m-2" (click)="addFramework()" [disabled]="true">Add Framework
+      </button>
       <button type="button" class="btn btn-primary m-2" (click)="addTelefone()">Add Telefone</button>
     </form>
   </article><!--article-->

@@ -48,6 +48,7 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     this.carregarEstados();
     this.carregarCargos();
     this.carregarTecnologias();
+    this.loadLinguasOnForm();
     this.carregarNewsLetters();
     this.criandoFormBuilderReativo2();
     this.loadFrameworksOnForm();
@@ -70,11 +71,21 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
       }),
       cargo: [null, Validators.required],
       tecnologias: [null, Validators.required],
+      linguas: this.formularioBuilder.array([]),
       newsletter: ['s'],
       termos: [null, Validators.requiredTrue],
       frameworks: this.formularioBuilder.array([]),
       telefones: this.formularioBuilder.array([])
     })
+  }
+
+  get linguas(): FormArray {
+    return this.formulario.get("linguas") as FormArray
+  }
+
+  addLingua() {
+    const linguaForm = new FormControl(false);
+    this.linguas.push(linguaForm);
   }
 
   get frameworks(): FormArray {
@@ -125,10 +136,35 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    // Método Object.assign cria um objeto vazio com o valor do formulário
+    let formFiltrado = Object.assign({}, this.formulario.value);
+    // Agora vamos reescrever o objeto formFiltrado
+    formFiltrado = Object.assign(formFiltrado, {
+
+      // Reescrevendo o atributo “linguas” do FormFiltrado.
+      // Setando no atributo “linguas” do FormFiltrado o valor do atributo “linguas” do Formulario
+      linguas: this.formulario.get("linguas")?.value
+        // Mapeando pelo itemLista = true ou seja, se True retorna a string da lista de lingua,
+        // baseado no index que o usuário marcou true na tela, se nao retorna null
+        .map((itemLista: boolean, i: any) => itemLista ? this.loadLinguas().at(i) : null)
+        // Filtrando por somente valores diferente de null, com isso vai restar somente um array de strings das linguas selecionadas
+        .filter((lingua: any) => lingua != null),
+
+      // Reescrevendo o atributo “frameworks” do FormFiltrado.
+      // Setando no atributo “frameworks” do FormFiltrado o valor do atributo “frameworks” do Formulario
+      frameworks: this.formulario.get("frameworks")?.value
+        // Mapeado pelo obj.stats = true ou seja, retorna o objeto que o usuário marcou, se nao retorna null
+        .map((obj: any, i: any) => obj.stats ? obj : null)
+        // Filtrando por somente valores diferente de null, com isso vai restar somente objetos que foram marcados true
+        .filter((obj: any) => obj != null)
+    })
+
+    console.log(`Checkbox Filtrada:`)
+    console.log(formFiltrado)
     this.formSubmitted = true;
     console.log(this.formulario)
     if (this.formulario.valid) {
-      this.inscricao = this.envioDadosWebService.enviarDados(JSON.stringify(this.formulario.value)).subscribe({
+      this.inscricao = this.envioDadosWebService.enviarDados(JSON.stringify(formFiltrado)).subscribe({
         next: (response) => {
           console.log(response)
           this.formulario.reset();
@@ -244,6 +280,14 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     // }
   }
 
+  loadLinguas(): string[] {
+    return this.dropDownService.getLinguas();
+  }
+
+  loadLinguasOnForm(): void {
+    this.loadLinguas().forEach(() => this.addLingua());
+  }
+
   carregarNewsLetters() {
     this.newsletters = this.dropDownService.getNewsLetter();
   }
@@ -270,6 +314,7 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   loadFrameworks(): any[] {
     return this.dropDownService.getFrameworks();
   }
+
   loadFrameworksOnForm(): void {
     this.loadFrameworks().forEach(() => this.addFramework())
     this.frameworks.patchValue(this.loadFrameworks())
@@ -307,8 +352,8 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
       .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
   }
 
-  validatorCheckBox(input:string): boolean {
-    return this.formValidatorService.validateIsInputDirtyOrFormSubmittedReactive(this.formSubmitted, (<FormControl> this.formulario.get(input)))
+  validatorCheckBox(input: string): boolean {
+    return this.formValidatorService.validateIsInputDirtyOrFormSubmittedReactive(this.formSubmitted, (<FormControl>this.formulario.get(input)))
   }
 
   validatorNgClassInputFormArray(input: string, itemFormArray: AbstractControl): string {
