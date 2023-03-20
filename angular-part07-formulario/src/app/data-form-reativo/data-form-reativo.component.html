@@ -160,13 +160,13 @@
             <div class="row" [formGroupName]="j">
               <div class="form-floating col-md-3 mb-3">
                 <input type="text" class="form-control" id="{{'input'+j}}" formControlName="numero"
-                [ngClass]="validatorNgClassInputFormArray('numero','telefones', j)">
+                [ngClass]="validatorNgClassInputFormArray('numero', telefoneForm)">
                 <label for="{{'input'+j}}">Número</label>
                 <small class="invalid-feedback">Campo Inválido</small>
               </div>
               <div class="form-floating col-md-3 mb-3">
                 <select class="form-select" id="{{'select'+j}}" formControlName="tipoTelefone"
-                [ngClass]="validatorNgClassInputFormArray('tipoTelefone','telefones', j)">
+                [ngClass]="validatorNgClassInputFormArray('tipoTelefone', telefoneForm)">
                   <option ngValue="CELULAR">CELULAR</option>
                   <option ngValue="CASA">CASA</option>
                   <option ngValue="TRABALHO">TRABALHO</option>

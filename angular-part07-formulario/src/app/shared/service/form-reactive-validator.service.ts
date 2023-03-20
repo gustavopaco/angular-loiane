@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {AbstractControl, FormArray, FormControl} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class FormReactiveValidatorService {
   }
 
   validateInterpolationLabel(formSubmitted: boolean, input: FormControl, defaultMessage: string) {
-      return this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input) ? `*${defaultMessage} obrigatório` : defaultMessage
+    return this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input) ? `*${defaultMessage} obrigatório` : defaultMessage
   }
 
   validateIsFormSubmittedReactive(formSubmitted: boolean, input: FormControl): boolean {
@@ -52,7 +52,7 @@ export class FormReactiveValidatorService {
   }
 
   validateIsMailInvalidMessage(input: FormControl, defaultMessage: string): string {
-    return (this.validateIsMailInvalid(input) ? 'E-mail inválido': defaultMessage)
+    return (this.validateIsMailInvalid(input) ? 'E-mail inválido' : defaultMessage)
   }
 
   validateIsMinLength(input: FormControl): boolean {
@@ -87,21 +87,25 @@ export class FormReactiveValidatorService {
     return defaultMessage;
   }
 
-  validateIsMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string) : string {
+  validateIsMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateIsMinLength(input)) {
-        if (input.errors) {
-          return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
-        }
-    } else if(this.validateIsMaxLength(input)) {
       if (input.errors) {
-          return `Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
+        return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
+      }
+    } else if (this.validateIsMaxLength(input)) {
+      if (input.errors) {
+        return `Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
       }
     }
     return defaultMessage;
   }
 
-  validateNgClassInputFormArray(formulario: FormGroup, formSubmitted: boolean, formArrayName: string, index: number , input: string) : string {
-      let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
-      return this.validateNgClassInput(formSubmitted, inputFormControl);
+  validateNgClassInputFormArray(input:string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
+    return this.validateNgClassInput(formSubmitted, (<FormControl> itemFormArray.get(input)));
+  }
+  validateNgClassInputFormArray2(input: string, formSubmitted: boolean, formArray: FormArray, index: number): string {
+    // let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
+    let inputFormControl = formArray.get(String(index))?.get(input) as FormControl
+    return this.validateNgClassInput(formSubmitted, inputFormControl);
   }
 }

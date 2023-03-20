@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EnvioDadosWebserviceService} from "../shared/service/envio-dados-webservice.service";
 import {Observable, Subscription} from "rxjs";
 import {Usuario} from "../shared/model/usuario";
@@ -273,7 +273,7 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   loadFrameworksOnForm(): void {
     this.loadFrameworks().forEach(() => this.addFramework())
     this.frameworks.patchValue(this.loadFrameworks())
-    console.log(this.frameworks.controls[0].get('nome')?.value);
+    // console.log(this.frameworks.controls[0].get('nome')?.value);
   }
 
   loadTelefonesOnForm(): void {
@@ -311,8 +311,10 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     return this.formValidatorService.validateIsInputDirtyOrFormSubmittedReactive(this.formSubmitted, (<FormControl> this.formulario.get(input)))
   }
 
-  validatorNgClassInputFormArray(input: string, formArrayName: string, index: number): string {
-    return this.formValidatorService.validateNgClassInputFormArray(this.formulario,this.formSubmitted, formArrayName, index, input);
+  validatorNgClassInputFormArray(input: string, itemFormArray: AbstractControl): string {
+    // console.log(this.telefones.get("0")?.get("numero"))
+    // console.log(itemFormArray.get("numero")?.value)
+    return this.formValidatorService.validateNgClassInputFormArray(input, this.formSubmitted, itemFormArray);
     // console.log(this.formulario.get("telefones")?.get("0")?.get("numero"))
     // return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(formArrayName)?.get(String(index))?.get(input)));
     // return this.formValidatorService.validateNgClassInput(this.formSubmitted,<FormControl> this.formulario.get(formArrayName).g)
