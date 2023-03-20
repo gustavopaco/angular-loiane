@@ -20,7 +20,7 @@ export class DropdownService {
       {nome: 'Dev', nivel: 'Junior', desc: 'Dev Jr'},
       {nome: 'Dev', nivel: 'Pleno', desc: 'Dev Pleno'},
       {nome: 'Dev', nivel: 'Senior', desc: 'Dev Senior'}
-    ]
+    ];
   }
 
   getTecnologias(): any[] {
@@ -29,6 +29,32 @@ export class DropdownService {
       {nome: "javascript", desc: "Javascript"},
       {nome: "php", desc: "PHP"},
       {nome: "ruby", desc: "Ruby"},
+      {nome: "html", desc: "HTML"},
+      {nome: "css", desc: "CSS"},
+      {nome: "kotlin", desc: "Kotlin"},
     ];
+  }
+
+  getNewsLetter(): any[] {
+    return [
+      { valor: 's', desc: 'Sim'},
+      { valor: 'n', desc: 'Não'}
+    ];
+  }
+
+  getFrameworks(): any[] {
+    // return ["Angular", "Rect", "Vue", "Sencha"];
+    return [
+      {nome: "Angular", stats: false},
+      {nome: "React", stats: false},
+      {nome: "Vue", stats: false},
+      {nome: "Sencha", stats: false}
+    ];
+  }
+
+  getTelefones(): any[] {
+    return [
+      { numero: "993039064", tipoTelefone: "CELULAR"}
+    ]
   }
 }

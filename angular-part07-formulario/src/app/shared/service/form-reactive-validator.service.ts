@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormControl} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -98,5 +98,10 @@ export class FormReactiveValidatorService {
       }
     }
     return defaultMessage;
+  }
+
+  validateNgClassInputFormArray(formulario: FormGroup, formSubmitted: boolean, formArrayName: string, index: number , input: string) : string {
+      let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
+      return this.validateNgClassInput(formSubmitted, inputFormControl);
   }
 }

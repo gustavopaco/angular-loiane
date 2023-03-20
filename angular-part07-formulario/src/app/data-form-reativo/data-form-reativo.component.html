@@ -92,7 +92,7 @@
         </div><!--row-->
       </div><!--formGroupName-->
       <div class="row">
-        <div class="col-md-4 mb-3 align-self-center">
+        <div class="col-md-3 mb-3 align-self-center">
           <div class="form-floating">
             <select class="form-select" id="cargo" formControlName="cargo" [compareWith]="compararObjetos"
                     [ngClass]="validatorNgClassInput('cargo')" (change)="carregarCargoSelecionado()">
@@ -102,24 +102,87 @@
             <small class="invalid-feedback">Campo Inválido</small>
           </div>
         </div><!--col-->
-        <div class="col-md-2 mb-3 align-self-center">
+        <div class="col-md-3 mb-3 align-self-center">
           <button type="button" class="btn btn-warning" (click)="setarCargo()">Setar Cargo</button>
         </div><!--col-->
-        <div class="col-md-4 mb-3">
-          <div class="form-floating">
-            <select multiple class="form-select multiSelect overflow-hidden" id="tecnologia" formControlName="tecnologias" [compareWith]="compararObjetos"
-                    [ngClass]="validatorNgClassInput('tecnologias')" (change)="carregarTecnologiaSelecionado()">
-              <option *ngFor="let tecnologia of tecnologias" [ngValue]="tecnologia">{{ tecnologia.desc  }}</option>
-            </select>
-            <label for="tecnologia">Tecnologias</label>
-            <small class="invalid-feedback">Campo Inválido</small>
-          </div>
+        <div class="col-md-3 mb-3">
+          <label for="tecnologia">Tecnologias</label>
+          <select multiple class="form-select multiSelect overflow-auto" id="tecnologia" formControlName="tecnologias"
+                  [compareWith]="compararObjetos"
+                  [ngClass]="validatorNgClassInput('tecnologias')" (change)="carregarTecnologiaSelecionado()">
+            <option *ngFor="let tecnologia of tecnologias" [ngValue]="tecnologia">{{ tecnologia.desc  }}</option>
+          </select>
+          <small class="invalid-feedback">Campo Inválido</small>
         </div><!--col-->
-        <div class="col-md-2 mb-3 align-self-center">
+        <div class="col-md-3 mb-3 align-self-center">
           <button type="button" class="btn btn-warning" (click)="setarTecnologias()">Setar Tecnologia</button>
         </div><!--col-->
       </div><!--row-->
-      <button type="submit" class="btn btn-primary btn-lg my-2">Enviar</button>
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label class="d-block">Newsletter</label>
+          <div class="form-check form-check-inline" *ngFor="let newsletter of newsletters; index as i">
+            <input type="radio" class="form-check-input" id="{{ 'newsletter'+i }}" formControlName="newsletter"
+                   name="newsletter" [value]="newsletter.valor">
+            <label class="form-check-label" for="{{ 'newsletter'+i }}">{{ newsletter.desc }}</label>
+          </div>
+        </div><!--col-->
+      </div><!--row-->
+      <div class="col-md-3 mb-3">
+        <label class="d-block">Termos</label>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="termos" formControlName="termos"
+                 [ngClass]="validatorNgClassInput('termos')">
+          <label class="form-check-label" for="termos">Aceito os termos</label>
+          <small class="invalid-feedback">Campo Inválido</small>
+        </div>
+      </div><!--col-->
+      <label class="d-block py-2 text-center">Frameworks</label>
+      <div class="row">
+        <div class="col-sm-6 col-md-3 mb-4" formArrayName="frameworks"
+             *ngFor="let frameworkForm of frameworks.controls ; index as i">
+          <div [formGroupName]="i">
+            <div class="mb-2">
+              <label for="{{ 'frameworkName'+i }}">Nome</label>
+              <input type="text" class="form-control" id="{{ 'frameworkName'+i }}" formControlName="nome">
+            </div><!--col-->
+            <div class="form-check form-check-inline">
+              <input type="checkbox" class="form-check-input" id="{{ 'framework'+i }}" formControlName="stats">
+              <label class="form-check-label"
+                     for="{{ 'framework'+i }}">{{ frameworkForm.get('nome')?.value }}</label>
+            </div>
+          </div>
+        </div>
+        <!--          <small class="d-block invalid-feedback" *ngIf="validatorCheckBox('frameworks')">Campo Inválido</small>-->
+      </div><!--row-->
+      <div class="row">
+        <div class="col-md-12" formArrayName="telefones" *ngFor="let telefoneForm of telefones?.controls ; index as j">
+            <div class="row" [formGroupName]="j">
+              <div class="form-floating col-md-3 mb-3">
+                <input type="text" class="form-control" id="{{'input'+j}}" formControlName="numero"
+                [ngClass]="validatorNgClassInputFormArray('numero','telefones', j)">
+                <label for="{{'input'+j}}">Número</label>
+                <small class="invalid-feedback">Campo Inválido</small>
+              </div>
+              <div class="form-floating col-md-3 mb-3">
+                <select class="form-select" id="{{'select'+j}}" formControlName="tipoTelefone"
+                [ngClass]="validatorNgClassInputFormArray('tipoTelefone','telefones', j)">
+                  <option ngValue="CELULAR">CELULAR</option>
+                  <option ngValue="CASA">CASA</option>
+                  <option ngValue="TRABALHO">TRABALHO</option>
+                </select>
+                <label for="{{'select'+j}}">Tipo de Telefone</label>
+                <small class="invalid-feedback">Campo Inválido</small>
+              </div>
+              <div class="col-md-3 mb-3 align-self-center">
+                <button type="button" class="btn btn-danger" (click)="removeTelefone(j)">Deletar</button>
+              </div><!--col-->
+            </div><!--row-->
+        </div><!--col-->
+      </div><!--row-->
+      <button type="submit" class="btn btn-primary btn-lg m-2">Enviar</button>
+      <button type="button" class="btn btn-primary m-2" (click)="addFramework()">Add Framework</button>
+      <button type="button" class="btn btn-primary m-2" (click)="addTelefone()">Add Telefone</button>
     </form>
   </article><!--article-->
 

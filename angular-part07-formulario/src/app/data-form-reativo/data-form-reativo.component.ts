@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {EnvioDadosWebserviceService} from "../shared/service/envio-dados-webservice.service";
 import {Observable, Subscription} from "rxjs";
 import {Usuario} from "../shared/model/usuario";
@@ -25,7 +25,8 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   estados?: Observable<any>;
   cargos: any[] = [];
   tecnologias: any[] = [];
-
+  newsletters: any[] = [];
+  // frameworks: string[] = [];
   inscricao?: Subscription;
   inscricao2?: Subscription;
   inscricao3?: Subscription;
@@ -41,12 +42,16 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.criandoFormBuilderReativo();
     this.mapearFormParaObjeto();
     this.carregarEstados();
     this.carregarCargos();
     this.carregarTecnologias();
+    this.carregarNewsLetters();
     this.criandoFormBuilderReativo2();
+    this.loadFrameworksOnForm();
+    this.loadTelefonesOnForm();
   }
 
   /*Inicio -> Form 1*/
@@ -64,8 +69,47 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
         estado: [this.usuario.endereco.estado, Validators.required],
       }),
       cargo: [null, Validators.required],
-      tecnologias: [null, Validators.required]
+      tecnologias: [null, Validators.required],
+      newsletter: ['s'],
+      termos: [null, Validators.requiredTrue],
+      frameworks: this.formularioBuilder.array([]),
+      telefones: this.formularioBuilder.array([])
     })
+  }
+
+  get frameworks(): FormArray {
+    return this.formulario.get('frameworks') as FormArray;
+  }
+
+  addFramework(): void {
+    // const frameworkForm = new FormControl(false) //Cria um Atributo
+    const frameworkForm = this.formularioBuilder.group({
+      nome: [null],
+      stats: [null]
+    }); // Cria um Objeto
+    this.frameworks.push(frameworkForm);  // Coloca um Atributo ou Um Objeto na Lista
+  }
+
+  removeFramework(frameworkIndex: number): void {
+    this.frameworks.removeAt(frameworkIndex)
+  }
+
+  get telefones(): FormArray {
+    return this.formulario.get('telefones') as FormArray;
+  }
+
+  addTelefone(): void {
+    const telefoneForm = this.formularioBuilder.group({
+      numero: [null, Validators.required],
+      tipoTelefone: [null, Validators.required]
+    }); // Cria um Objeto
+    this.telefones.push(telefoneForm);  // Coloca um Atributo ou Um Objeto na Lista
+    // let tel = this.formulario.get("telefones") as FormArray
+    // console.log(tel.controls[0].get('numero'))
+  }
+
+  removeTelefone(telefoneIndex: number): void {
+    this.telefones.removeAt(telefoneIndex)
   }
 
   mapearFormParaObjeto(): void {
@@ -197,92 +241,88 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     // }
     // Note: Setando valor no formulario
     // this.formulario.get("tecnologias")?.patchValue(tecnologias)
-  // }
-}
+    // }
+  }
 
-/*Fim -> Form 1*/
+  carregarNewsLetters() {
+    this.newsletters = this.dropDownService.getNewsLetter();
+  }
 
-/*xxx-----------------------------------------------------------------*/
+  /*Fim -> Form 1*/
 
-/*Inicio -> Form 2*/
-criandoFormBuilderReativo2()
-:
-void {
-  this.formularioEstado = this.formularioBuilder.group({
-    id: [this.estado.id],
-    sigla: [this.estado.sigla],
-    nome: [this.estado.nome]
-  })
-}
+  /*xxx-----------------------------------------------------------------*/
 
-buscarEstadosAPI()
-:
-void {
-  this.dropDownService.getEstadosBR().subscribe(response => {
-    this.formularioEstado.patchValue(response[0])
-  })
-}
+  /*Inicio -> Form 2*/
+  criandoFormBuilderReativo2(): void {
+    this.formularioEstado = this.formularioBuilder.group({
+      id: [this.estado.id],
+      sigla: [this.estado.sigla],
+      nome: [this.estado.nome]
+    })
+  }
 
-/*Fim -> Form 2*/
+  buscarEstadosAPI(): void {
+    this.dropDownService.getEstadosBR().subscribe(response => {
+      this.formularioEstado.patchValue(response[0])
+    })
+  }
 
-validatorNgClassInput(input
-:
-string
-):
-string
-{
-  return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(input)));
-}
+  loadFrameworks(): any[] {
+    return this.dropDownService.getFrameworks();
+  }
+  loadFrameworksOnForm(): void {
+    this.loadFrameworks().forEach(() => this.addFramework())
+    this.frameworks.patchValue(this.loadFrameworks())
+    console.log(this.frameworks.controls[0].get('nome')?.value);
+  }
 
-validatorNgClassLabel(input
-:
-string
-):
-string
-{
-  return this.formValidatorService.validateNgClassLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)))
-}
+  loadTelefonesOnForm(): void {
+    this.dropDownService.getTelefones().forEach(() => this.addTelefone())
+    this.telefones.patchValue(this.dropDownService.getTelefones());
+  }
 
-validatorLabelValue(input
-:
-string, defaultMessage
-:
-string
-):
-string
-{
-  return this.formValidatorService.validateInterpolationLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)), defaultMessage)
-}
+  /*Fim -> Form 2*/
 
-validatorEmailInvalid(input
-:
-string
-):
-string
-{
-  return this.formValidatorService
-    .validateIsMailInvalidMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-}
+  validatorNgClassInput(input: string): string {
+    return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(input)));
+  }
 
-validatorCepInvalid(input
-:
-string
-):
-string
-{
-  // return this.formValidatorService.validateIsMinLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-  // return this.formValidatorService.validateIsMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-  return this.formValidatorService
-    .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
-}
+  validatorNgClassLabel(input: string): string {
+    return this.formValidatorService.validateNgClassLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)))
+  }
+
+  validatorLabelValue(input: string, defaultMessage: string): string {
+    return this.formValidatorService.validateInterpolationLabel(this.formSubmitted, (<FormControl>this.formulario.get(input)), defaultMessage)
+  }
+
+  validatorEmailInvalid(input: string): string {
+    return this.formValidatorService
+      .validateIsMailInvalidMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+  }
+
+  validatorCepInvalid(input: string): string {
+    // return this.formValidatorService.validateIsMinLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+    // return this.formValidatorService.validateIsMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
+    return this.formValidatorService
+      .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
+  }
+
+  validatorCheckBox(input:string): boolean {
+    return this.formValidatorService.validateIsInputDirtyOrFormSubmittedReactive(this.formSubmitted, (<FormControl> this.formulario.get(input)))
+  }
+
+  validatorNgClassInputFormArray(input: string, formArrayName: string, index: number): string {
+    return this.formValidatorService.validateNgClassInputFormArray(this.formulario,this.formSubmitted, formArrayName, index, input);
+    // console.log(this.formulario.get("telefones")?.get("0")?.get("numero"))
+    // return this.formValidatorService.validateNgClassInput(this.formSubmitted, (<FormControl>this.formulario.get(formArrayName)?.get(String(index))?.get(input)));
+    // return this.formValidatorService.validateNgClassInput(this.formSubmitted,<FormControl> this.formulario.get(formArrayName).g)
+  }
 
 
-ngOnDestroy()
-:
-void {
-  this.inscricao?.unsubscribe();
-  this.inscricao2?.unsubscribe();
-  this.inscricao3?.unsubscribe();
-  this.inscricao4?.unsubscribe();
-}
+  ngOnDestroy(): void {
+    this.inscricao?.unsubscribe();
+    this.inscricao2?.unsubscribe();
+    this.inscricao3?.unsubscribe();
+    this.inscricao4?.unsubscribe();
+  }
 }
