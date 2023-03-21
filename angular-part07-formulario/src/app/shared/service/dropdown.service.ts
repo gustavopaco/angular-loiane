@@ -1,18 +1,27 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
+import {Cidade} from "../model/cidade";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DropdownService {
 
-  URL: string = "//raw.githubusercontent.com/gustavopaco/cidades-estados-BR/main/estados.json"
+  URL_ESTADOS: string = "//raw.githubusercontent.com/gustavopaco/cidades-estados-BR/main/estados.json"
+  URL_CIDADES: string = "//raw.githubusercontent.com/gustavopaco/cidades-estados-BR/main/cidades.json"
 
   constructor(private httpClient: HttpClient) { }
 
+  getCidades(estadoID: string): Observable<any> {
+    return this.httpClient.get<Cidade[]>(this.URL_CIDADES)
+      .pipe(
+        map((cidades: Cidade[]) => cidades.filter( c => c.estadoId == estadoID))
+      );
+  }
+
   getEstadosBR() : Observable<any> {
-    return this.httpClient.get(this.URL)
+    return this.httpClient.get(this.URL_ESTADOS)
   }
 
   getCargos(): any[] {

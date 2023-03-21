@@ -7,8 +7,8 @@
           <div class="form-floating">
             <input type="text" class="form-control" id="nome" name="nome" formControlName="nome"
                    [ngClass]="validatorNgClassInput('nome')" placeholder="Informe seu nome">
-            <label for="nome">Nome</label>
-            <small class="invalid-feedback">Campo Invalido</small>
+            <label for="nome"><span class="invalid-text">*</span>Nome</label>
+            <small class="invalid-feedback">{{ validatorGenericSmallMessage('nome','Nome') }}</small>
           </div>
         </div><!--col-->
       </div><!--row-->
@@ -16,10 +16,10 @@
         <div class="col-md-6 mb-3">
           <div class="form-floating ">
             <input type="email" class="form-control" id="email" formControlName="email"
-                   [ngClass]="validatorNgClassInput('email')" placeholder="Informe seu e-mail">
+                   [ngClass]="validatorNgClassInputPENDING('email')" placeholder="Informe seu e-mail">
             <label for="email"
-                   [ngClass]="validatorNgClassLabel('email')">{{ validatorLabelValue('email', 'E-mail') }}</label>
-            <small class="invalid-feedback">{{ validatorEmailInvalid('email') }}</small>
+                   [ngClass]="validatorNgClassLabel('email')"><span class="invalid-text">*</span>{{ validatorLabelValue('email', 'E-mail') }}</label>
+            <small [ngClass]="validatorNgClassSmall('email')">{{ validatorEmailInvalid('email') }}</small>
           </div>
         </div><!--col-->
         <div class="col-md-6 mb-3">
@@ -27,7 +27,7 @@
             <input type="email" class="form-control" id="confirmarEmail" formControlName="confirmarEmail"
                    [ngClass]="validatorNgClassInput('confirmarEmail')" placeholder="Informe seu e-mail">
             <label for="confirmarEmail"
-                   [ngClass]="validatorNgClassLabel('confirmarEmail')">{{ validatorLabelValue('confirmarEmail', 'Confirmar E-mail') }}</label>
+                   [ngClass]="validatorNgClassLabel('confirmarEmail')"><span class="invalid-text">*</span>{{ validatorLabelValue('confirmarEmail', 'Confirmar E-mail') }}</label>
             <small class="invalid-feedback">{{ validatorIsEqualsToMessage('confirmarEmail') }}</small>
           </div>
         </div><!--col-->
@@ -39,7 +39,7 @@
               <input type="text" class="form-control" id="cep" formControlName="cep"
                      [ngClass]="validatorNgClassInput('endereco.cep')" (blur)="consultaCep()"
                      placeholder="Informe seu Cep">
-              <label for="cep">Cep</label>
+              <label for="cep"><span class="invalid-text">*</span>Cep</label>
               <small class="invalid-feedback">{{ validatorCepInvalid('endereco.cep') }}</small>
             </div>
           </div><!--col-->
@@ -47,7 +47,7 @@
             <div class="form-floating">
               <input type="text" class="form-control" id="numero" formControlName="numero"
                      [ngClass]="validatorNgClassInput('endereco.numero')" placeholder="Informe o Número da casa">
-              <label for="numero">Número</label>
+              <label for="numero"><span class="invalid-text">*</span>Número</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
           </div><!--col-->
@@ -64,7 +64,7 @@
             <div class="form-floating">
               <input type="text" class="form-control" id="rua" formControlName="rua"
                      [ngClass]="validatorNgClassInput('endereco.rua')" placeholder="Informe a Rua">
-              <label for="rua">Rua</label>
+              <label for="rua"><span class="invalid-text">*</span>Rua</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
           </div><!--col-->
@@ -74,27 +74,31 @@
             <div class="form-floating">
               <input type="text" class="form-control" id="bairro" formControlName="bairro"
                      [ngClass]="validatorNgClassInput('endereco.bairro')" placeholder="Informe o Bairro">
-              <label for="bairro">Bairro</label>
+              <label for="bairro"><span class="invalid-text">*</span>Bairro</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
           </div><!--col-->
           <div class="col-md-4 mb-3">
             <div class="form-floating">
-              <input type="text" class="form-control" id="cidade" formControlName="cidade"
-                     [ngClass]="validatorNgClassInput('endereco.cidade')" placeholder="Informe a Cidade">
-              <label for="cidade">Cidade</label>
+<!--              <input type="text" class="form-control" id="cidade" formControlName="cidade"-->
+<!--                     [ngClass]="validatorNgClassInput('endereco.cidade')" placeholder="Informe a Cidade">-->
+              <select class="form-select" id="cidade" formControlName="cidade"
+                      [ngClass]="validatorNgClassInput('endereco.cidade')">
+                <option *ngFor="let cidade of cidades " [value]="cidade.nome">{{ cidade.nome }}</option>
+              </select>
+              <label for="cidade"><span class="invalid-text">*</span>Cidade</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
           </div><!--col-->
           <div class="col-md-3 mb-3">
             <div class="form-floating">
-              <!--            <input type="text" class="form-control" id="estado" name="estado"-->
-              <!--                   [ngClass]="validatorNgClassInput('endereco.estado')" placeholder="Informe o Estado">-->
+<!--                          <input type="text" class="form-control" id="estado" name="estado"-->
+<!--                                 [ngClass]="validatorNgClassInput('endereco.estado')" placeholder="Informe o Estado">-->
               <select class="form-select" id="estado" formControlName="estado"
-                      [ngClass]="validatorNgClassInput('endereco.estado')" (change)="buscarEstado($event)">
-                <option *ngFor="let estado of estados | async" value="{{ estado.sigla }}">{{ estado.nome }}</option>
+                      [ngClass]="validatorNgClassInput('endereco.estado')">
+                <option *ngFor="let estado of estados " value="{{ estado.sigla }}">{{ estado.nome }}</option>
               </select>
-              <label for="estado">Estado</label>
+              <label for="estado"><span class="invalid-text">*</span>Estado</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
           </div><!--col-->
@@ -107,7 +111,7 @@
                     [ngClass]="validatorNgClassInput('cargo')" (change)="carregarCargoSelecionado()">
               <option *ngFor="let cargo of cargos" [ngValue]="cargo">{{ cargo.desc  }}</option>
             </select>
-            <label for="cargo">Cargo</label>
+            <label for="cargo"><span class="invalid-text">*</span>Cargo</label>
             <small class="invalid-feedback">Campo Inválido</small>
           </div>
         </div><!--col-->
@@ -115,7 +119,7 @@
           <button type="button" class="btn btn-warning" (click)="setarCargo()">Setar Cargo</button>
         </div><!--col-->
         <div class="col-md-3 mb-3">
-          <label for="tecnologia">Tecnologias</label>
+          <label for="tecnologia"><span class="invalid-text">*</span>Tecnologias</label>
           <select multiple class="form-select multiSelect overflow-auto" id="tecnologia" formControlName="tecnologias"
                   [compareWith]="compararObjetos"
                   [ngClass]="validatorNgClassInput('tecnologias')" (change)="carregarTecnologiaSelecionado()">
@@ -133,7 +137,7 @@
           <div class="form-check form-check-inline" >
             <input type="checkbox" class="form-check-input" id="{{'lingua'+i}}" [formControlName]="i"
                    [ngClass]="validatorNgClassMinCheckBox()">
-            <label class="form-check-label" for="{{'lingua'+i}}">{{ loadLinguas()[i] }}</label>
+            <label class="form-check-label" for="{{'lingua'+i}}"><span class="invalid-text">*</span>{{ loadLinguas()[i] }}</label>
           </div>
         </div><!--col-->
         <small class="invalid-feedback text-center">Selecione pelo menos 1 opção</small>
@@ -150,7 +154,7 @@
       </div><!--row-->
       <div class="row">
         <div class="col-md-3 mb-3">
-          <label class="d-block">Termos</label>
+          <label class="d-block"><span class="invalid-text">*</span>Termos</label>
           <div class="form-check">
             <input type="checkbox" class="form-check-input" id="termos" formControlName="termos"
                    [ngClass]="validatorNgClassInput('termos')">
@@ -160,7 +164,7 @@
         </div><!--col-->
       </div><!--row-->
       <div class="row my-2 grey lighten-4">
-        <label class="d-block py-2 text-center">Frameworks</label>
+        <label class="d-block py-2 text-center"><span class="invalid-text">*</span>Frameworks</label>
         <div class="col-sm-6 col-md-3 mb-4" formArrayName="frameworks"
              *ngFor="let frameworkForm of frameworks.controls ; index as i">
           <div [formGroupName]="i">
@@ -183,7 +187,7 @@
             <div class="form-floating col-md-3 mb-3">
               <input type="text" class="form-control" id="{{'input'+j}}" formControlName="numero"
                      [ngClass]="validatorNgClassInputFormArray('numero', telefoneForm)">
-              <label for="{{'input'+j}}">Número</label>
+              <label for="{{'input'+j}}"><span class="invalid-text ps-1">*</span>Número</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
             <div class="form-floating col-md-3 mb-3">
@@ -193,7 +197,7 @@
                 <option ngValue="CASA">CASA</option>
                 <option ngValue="TRABALHO">TRABALHO</option>
               </select>
-              <label for="{{'select'+j}}">Tipo de Telefone</label>
+              <label for="{{'select'+j}}"><span class="invalid-text ps-1">*</span>Tipo de Telefone</label>
               <small class="invalid-feedback">Campo Inválido</small>
             </div>
             <div class="col-md-3 mb-3 align-self-center">

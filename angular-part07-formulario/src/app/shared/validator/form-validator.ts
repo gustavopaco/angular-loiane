@@ -1,17 +1,9 @@
-import {Injectable} from '@angular/core';
 import {AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {map, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {VerificaEmailService} from "../service/verifica-email.service";
 
-@Injectable({
-  providedIn: 'root'
-})
-export class FormReactiveValidatorService {
-
-  constructor(private httpClient: HttpClient) {
-  }
-
-  validateNgClassInput(formSubmitted: boolean, input: FormControl): string {
+export class FormValidator {
+  static validateNgClassInput(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'is-valid'
     } else if (this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input)) {
@@ -20,8 +12,17 @@ export class FormReactiveValidatorService {
     return '';
   }
 
+  static validateNgClassInputPENDING(formSubmitted: boolean, input: FormControl): string {
+    if (input.valid) {
+      return 'is-valid'
+    } else if (this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input) || input.pending) {
+      return 'is-invalid'
+    }
+    return '';
+  }
 
-  validateNgClassLabel(formSubmitted: boolean, input: FormControl): string {
+
+  static validateNgClassLabel(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'valid-feedback'
     } else if (this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input)) {
@@ -30,41 +31,71 @@ export class FormReactiveValidatorService {
     return '';
   }
 
-  validateInterpolationLabel(formSubmitted: boolean, input: FormControl, defaultMessage: string) {
-    return this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input) ? `*${defaultMessage} obrigatório` : defaultMessage
+  static validateNgClassSmall(input: FormControl): string {
+    return input.valid ? 'valid-feedback' : 'invalid-feedback'
   }
 
-  validateIsFormSubmittedReactive(formSubmitted: boolean, input: FormControl): boolean {
+  static validateSmallMessage(formSubmitted: boolean, input: FormControl): string {
+    if (input.valid) {
+      return 'Válido';
+    } else if (this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input)) {
+      return '*Campo obrigatório';
+    } else {
+      return 'Campo inválido';
+    }
+  }
+
+  static validateGenericSmallMessage(input: FormControl, inputName: string, inputNameEqualsTo?: string): string {
+    if (input.errors) {
+      return input.hasError('required') ? `*${inputName} obrigatório.`
+        : input.hasError('minlength') ? `*Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
+          : input.hasError('maxlength') ? `*Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
+            : input.hasError('email') ? `*E-mail inválido.`
+              : input.hasError('emailInUse') ? `*E-mail já existe.`
+                : input.hasError('cepInvalido') ? `*CEP inválido.`
+                  : input.hasError('equalsTo') ? `*${inputName} e ${inputNameEqualsTo}, devem ser iguais.`
+                    : input.hasError('min') ? `*${inputName} deve ser maior ou igual a ${input.errors['min'].min}`
+                      : input.hasError('max') ? `*${inputName} deve ser menor ou igual a ${input.errors['max'].max}`
+                        : inputName
+    }
+    return `${inputName} Válido`
+  }
+
+  static validateInterpolationLabel(formSubmitted: boolean, input: FormControl, defaultMessage: string) {
+    return this.validateIsInputDirtyOrFormSubmittedReactive(formSubmitted, input) ? `${defaultMessage} obrigatório` : defaultMessage
+  }
+
+  static validateIsFormSubmittedReactive(formSubmitted: boolean, input: FormControl): boolean {
     return (formSubmitted && input.invalid);
   }
 
-  validateIsInputDirtyOrFormSubmittedReactive(formSubmitted: boolean, input: FormControl): boolean {
+  static validateIsInputDirtyOrFormSubmittedReactive(formSubmitted: boolean, input: FormControl): boolean {
     return (input.dirty && input.invalid || formSubmitted && input.invalid);
   }
 
-  private validateIsDirtyAndInvalid(input: FormControl): boolean {
+  private static validateIsDirtyAndInvalid(input: FormControl): boolean {
     return (input.dirty && input.invalid)
   }
 
-  validateIsMailInvalid(input: FormControl): boolean {
+  static validateIsMailInvalid(input: FormControl): boolean {
     if (input.errors) {
       return (this.validateIsDirtyAndInvalid(input) && input.errors['email'])
     }
     return false
   }
 
-  validateIsMailInvalidMessage(input: FormControl, defaultMessage: string): string {
+  static validateIsMailInvalidMessage(input: FormControl, defaultMessage: string): string {
     return (this.validateIsMailInvalid(input) ? 'E-mail inválido' : defaultMessage)
   }
 
-  validateIsMinLength(input: FormControl): boolean {
+  static validateIsMinLength(input: FormControl): boolean {
     if (input.errors) {
       return (this.validateIsDirtyAndInvalid(input) && input.errors['minlength'])
     }
     return false
   }
 
-  validateIsMinLengthMessage(input: FormControl, defaultMessage: string): string {
+  static validateIsMinLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateIsMinLength(input)) {
       if (input.errors) {
         return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
@@ -73,14 +104,14 @@ export class FormReactiveValidatorService {
     return defaultMessage;
   }
 
-  validateIsMaxLength(input: FormControl): boolean {
+  static validateIsMaxLength(input: FormControl): boolean {
     if (input.errors) {
       return (this.validateIsDirtyAndInvalid(input) && input.errors['maxlength'])
     }
     return false
   }
 
-  validateIsMaxLengthMessage(input: FormControl, defaultMessage: string): string {
+  static validateIsMaxLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateIsMaxLength(input)) {
       if (input.errors) {
         return `Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
@@ -89,7 +120,7 @@ export class FormReactiveValidatorService {
     return defaultMessage;
   }
 
-  validateIsMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string): string {
+  static validateIsMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateIsMinLength(input)) {
       if (input.errors) {
         return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
@@ -102,28 +133,37 @@ export class FormReactiveValidatorService {
     return defaultMessage;
   }
 
-  validateNgClassInputFormArray(input:string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
-    return this.validateNgClassInput(formSubmitted, (<FormControl> itemFormArray.get(input)));
+  static validateNgClassInputFormArray(input: string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
+    return this.validateNgClassInput(formSubmitted, (<FormControl>itemFormArray.get(input)));
   }
-  validateNgClassInputFormArray2(input: string, formSubmitted: boolean, formArray: FormArray, index: number): string {
+
+  static validateNgClassInputFormArray2(input: string, formSubmitted: boolean, formArray: FormArray, index: number): string {
     // let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
     let inputFormControl = formArray.get(String(index))?.get(input) as FormControl
     return this.validateNgClassInput(formSubmitted, inputFormControl);
   }
 
   /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateMinCheckBox seja aplicado no FormBuilder*/
-  validateNgClassMinCheckBox(formSubmitted: boolean, formArray: FormArray): string {
+  static validateCustomNgClassMinCheckBox(formSubmitted: boolean, formArray: FormArray): string {
     return (formArray.dirty && formArray.invalid || formSubmitted && formArray.invalid) ? 'is-invalid' : '';
   }
 
   /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateCep seja aplicado no FormBuilder*/
-  validateIsCepInvalidMessage(input: FormControl, defaultMessage: string) : string {
+  static validateCustomIsCepInvalidMessage(input: FormControl, defaultMessage: string): string {
     return input.hasError('cepInvalido') ? "CEP inválido" : defaultMessage;
   }
 
   /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateEqualsTo seja aplicado no FormBuilder*/
-  validateIsEqualsToMessage(input: FormControl, defaultMessage: string) : string {
+  static validateCustomIsEqualsToMessage(input: FormControl, defaultMessage: string): string {
     return input.hasError('required') ? defaultMessage : 'E-mail e Confirmar E-mail são diferentes';
+  }
+
+  static validateCustomEmailInUse(input: FormControl, defaultMessage: string): string {
+    return input.status == 'PENDING' ? 'Verificando'
+      : input.valid ? 'E-mail válido'
+        : input.hasError('email') ? 'E-mail inválido'
+          : input.hasError('emailInUse') ? 'E-mail já existe'
+            : defaultMessage
   }
 
 
@@ -132,7 +172,7 @@ export class FormReactiveValidatorService {
   *  com isso podemos contar quantos valores sao true, e
   *  se a quantidade de valores TRUE for >= 1, que é o minimo setado na assinatura do metodo, entao esta valido
   *  senao colocamos o setamos o erro {required: true}*/
-  formBuilderValidateMinCheckBox(minValid = 1) {
+  static formBuilderValidateMinCheckBox(minValid = 1) {
     return function (formArray: AbstractControl) {
       if (formArray instanceof FormArray) {
         // const totalChecked = formArray.controls
@@ -141,7 +181,7 @@ export class FormReactiveValidatorService {
         let totalChecked = 0;
         formArray.controls.forEach(itemArray => {
           if (itemArray.value) {
-            totalChecked += 1
+            totalChecked++;
           }
         })
         return totalChecked >= minValid ? null : {required: true}
@@ -150,16 +190,16 @@ export class FormReactiveValidatorService {
     }
   }
 
-  formBuilderValidateCep(input: FormControl) {
+  static formBuilderValidateCep(input: FormControl) {
     if (input.value != undefined && input.value != "") {
       const validacep = /^[0-9]{5}-[0-9]{3}$/;
       const validacep2 = /^[0-9]{8}$/;
-      return (validacep.test(input.value) || validacep2.test(input.value)) ? null : { cepInvalido: true }
+      return (validacep.test(input.value) || validacep2.test(input.value)) ? null : {cepInvalido: true}
     }
     return null;
   }
 
-  formBuilderValidateEqualsTo(otherInput: string) {
+  static formBuilderValidateEqualsTo(otherInput: string) {
     return function (formControl: FormControl) {
       if (otherInput == null) {
         throw new Error("É necessário informar um campo para comparação do formBuilderValidateEqualsTo")
@@ -176,27 +216,12 @@ export class FormReactiveValidatorService {
     }
   }
 
-
-  /*Note: Esse validador Async precisa de um de Array de Emails do servidor, se o retorno for Boolean
- que é o padrao se email existe no Banco ou nao  so precisa chamar o Observable*/
-  private asyncValidateMail(emailRequest: string): Observable<any> {
-    return this.httpClient.get("assets/data/emails.json")
-      .pipe(map((obj: any) => obj.emails),
-        // tap(console.log),
-        map(arrayObject => arrayObject.filter((item: any) => item.email == emailRequest)),
-        // tap(console.log),
-        map(array => array.length > 0),
-        // tap(console.log)
-      );
-  }
-
-  formBuilderValidateEmailAsync(formValidatorService: FormReactiveValidatorService): AsyncValidatorFn {
+  static formBuilderValidateEmailAsync(verificaEmailService: VerificaEmailService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors> => {
-      return formValidatorService.asyncValidateMail(control.value)
+      return verificaEmailService.asyncValidateMail(control.value)
         .pipe(
           map((emailExiste: boolean) => emailExiste ? {emailInUse: true} : {})
         );
     }
   }
-
 }

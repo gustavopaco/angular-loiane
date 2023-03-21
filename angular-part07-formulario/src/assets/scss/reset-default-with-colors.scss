@@ -16,6 +16,24 @@ html,body {
   cursor:pointer
 }
 
+.invalid-text {
+  color: #dc3545;
+}
+
+/*Note: Evento de FadeIn ao mudar de rota*/
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+router-outlet + * {
+  display: block;  /* Change display inline to block */
+  animation: fade 1s;
+}
 
 /*Note: Fix NgxBootstrap Tooltip*/
 .popover {
