@@ -4,7 +4,6 @@ import {EnvioDadosWebserviceService} from "../shared/service/envio-dados-webserv
 import {Observable, Subscription} from "rxjs";
 import {Usuario} from "../shared/model/usuario";
 import {FormReactiveValidatorService} from "../shared/service/form-reactive-validator.service";
-import {CEP_MAX_LEGNTH, CEP_MIN_LEGNTH} from "../shared/constant/constants";
 import {ConsultaCepViacepService} from "../shared/service/consulta-cep-viacep.service";
 import {DropdownService} from "../shared/service/dropdown.service";
 import {Estado} from "../shared/model/estado";
@@ -42,7 +41,6 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.criandoFormBuilderReativo();
     this.mapearFormParaObjeto();
     this.carregarEstados();
@@ -60,8 +58,9 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     this.formulario = this.formularioBuilder.group({
       nome: [this.usuario.nome, Validators.required],
       email: [this.usuario.email, [Validators.required, Validators.email]],
+      confirmarEmail: [this.usuario.email, [Validators.required, this.formValidatorService.formBuilderValidateEqualsTo('email')]],
       endereco: this.formularioBuilder.group({
-        cep: [this.usuario.endereco.cep, [Validators.required, Validators.minLength(CEP_MIN_LEGNTH), Validators.maxLength(CEP_MAX_LEGNTH)]],
+        cep: [this.usuario.endereco.cep, [Validators.required, this.formValidatorService.formBuilderValidateCep]],
         numero: [this.usuario.endereco.numero, Validators.required],
         complemento: [this.usuario.endereco.complemento],
         rua: [this.usuario.endereco.rua, Validators.required],
@@ -71,7 +70,7 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
       }),
       cargo: [null, Validators.required],
       tecnologias: [null, Validators.required],
-      linguas: this.formularioBuilder.array([]),
+      linguas: this.formularioBuilder.array([], this.formValidatorService.formBuilderValidateMinCheckBox(1)),
       newsletter: ['s'],
       termos: [null, Validators.requiredTrue],
       frameworks: this.formularioBuilder.array([]),
@@ -346,10 +345,11 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
   }
 
   validatorCepInvalid(input: string): string {
+    return this.formValidatorService.validateIsCepInvalidMessage(<FormControl> this.formulario.get(input) , "Campo Inválido")
     // return this.formValidatorService.validateIsMinLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
     // return this.formValidatorService.validateIsMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido')
-    return this.formValidatorService
-      .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
+    // return this.formValidatorService
+    //   .validateIsMinLengthOrMaxLengthMessage(<FormControl>this.formulario.get(input), 'Campo Inválido');
   }
 
   validatorCheckBox(input: string): boolean {
@@ -365,6 +365,13 @@ export class DataFormReativoComponent implements OnInit, OnDestroy {
     // return this.formValidatorService.validateNgClassInput(this.formSubmitted,<FormControl> this.formulario.get(formArrayName).g)
   }
 
+  validatorNgClassMinCheckBox(): string {
+    return this.formValidatorService.validateNgClassMinCheckBox(this.formSubmitted, this.linguas);
+  }
+
+  validatorIsEqualsToMessage(input: string): string {
+    return this.formValidatorService.validateIsEqualsToMessage(<FormControl> this.formulario.get(input), "Campo Inválido")
+  }
 
   ngOnDestroy(): void {
     this.inscricao?.unsubscribe();

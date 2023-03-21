@@ -13,13 +13,22 @@
         </div><!--col-->
       </div><!--row-->
       <div class="row">
-        <div class="col-md-12 mb-3">
+        <div class="col-md-6 mb-3">
           <div class="form-floating ">
             <input type="email" class="form-control" id="email" formControlName="email"
                    [ngClass]="validatorNgClassInput('email')" placeholder="Informe seu e-mail">
             <label for="email"
                    [ngClass]="validatorNgClassLabel('email')">{{ validatorLabelValue('email', 'E-mail') }}</label>
             <small class="invalid-feedback">{{ validatorEmailInvalid('email') }}</small>
+          </div>
+        </div><!--col-->
+        <div class="col-md-6 mb-3">
+          <div class="form-floating ">
+            <input type="email" class="form-control" id="confirmarEmail" formControlName="confirmarEmail"
+                   [ngClass]="validatorNgClassInput('confirmarEmail')" placeholder="Informe seu e-mail">
+            <label for="confirmarEmail"
+                   [ngClass]="validatorNgClassLabel('confirmarEmail')">{{ validatorLabelValue('confirmarEmail', 'Confirmar E-mail') }}</label>
+            <small class="invalid-feedback">{{ validatorIsEqualsToMessage('confirmarEmail') }}</small>
           </div>
         </div><!--col-->
       </div><!--row-->
@@ -118,14 +127,16 @@
           <button type="button" class="btn btn-warning" (click)="setarTecnologias()">Setar Tecnologia</button>
         </div><!--col-->
       </div><!--row-->
-      <div class="row">
-          <label class="d-block text-center mb-3">Linguas fluentes</label>
-        <div class="col-md-3 mb-3" formArrayName="linguas" *ngFor="let lingua of linguas.controls; index as i">
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" id="{{'lingua'+i}}" [formControlName]="i">
+      <div class="row grey lighten-4">
+        <label class="d-block text-center mb-3">Linguas fluentes</label>
+        <div class="col-md-3 mb-3" formArrayName="linguas" *ngFor="let lingua of linguas.controls; index as i" [ngClass]="validatorNgClassMinCheckBox()">
+          <div class="form-check form-check-inline" >
+            <input type="checkbox" class="form-check-input" id="{{'lingua'+i}}" [formControlName]="i"
+                   [ngClass]="validatorNgClassMinCheckBox()">
             <label class="form-check-label" for="{{'lingua'+i}}">{{ loadLinguas()[i] }}</label>
           </div>
         </div><!--col-->
+        <small class="invalid-feedback text-center">Selecione pelo menos 1 opção</small>
       </div><!--row-->
       <div class="row">
         <div class="col-md-3 mb-3">
@@ -148,7 +159,7 @@
           </div>
         </div><!--col-->
       </div><!--row-->
-      <div class="row">
+      <div class="row my-2 grey lighten-4">
         <label class="d-block py-2 text-center">Frameworks</label>
         <div class="col-sm-6 col-md-3 mb-4" formArrayName="frameworks"
              *ngFor="let frameworkForm of frameworks.controls ; index as i">
