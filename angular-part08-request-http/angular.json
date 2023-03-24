@@ -23,7 +23,6 @@
         "@schematics/angular:service": {
           "skipTests": true
         }
-
       },
       "root": "",
       "sourceRoot": "src",
@@ -44,8 +43,9 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
             "scripts": [
