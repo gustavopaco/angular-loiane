@@ -35,27 +35,27 @@ export class ToastMessageService {
 
   constructor(private toastrService: ToastrService) { }
 
-  successMessage(mensagem: string, titulo?: string, posicaoMensagem?: string) {
-    this.setarMensagem(AlertaToastr.SUCCESS, mensagem,titulo,posicaoMensagem);
+  successMessage(mensagem: string, titulo?: string, toastPosition?: string) {
+    this.setarMensagem(AlertaToastr.SUCCESS, mensagem,titulo,toastPosition);
   }
 
-  errorMessage(mensagem: string, titulo?: string, posicaoMensagem?: string) {
-    this.setarMensagem(AlertaToastr.DANGER, mensagem,titulo,posicaoMensagem);
+  errorMessage(mensagem: string, titulo?: string, toastPosition?: string) {
+    this.setarMensagem(AlertaToastr.DANGER, mensagem,titulo,toastPosition);
   }
 
-  infoMessage(mensagem: string, titulo?: string, posicaoMensagem?: string) {
-    this.setarMensagem(AlertaToastr.INFO, mensagem,titulo,posicaoMensagem);
+  infoMessage(mensagem: string, titulo?: string, toastPosition?: string) {
+    this.setarMensagem(AlertaToastr.INFO, mensagem,titulo,toastPosition);
   }
 
-  warningMessage(mensagem: string, titulo?: string, posicaoMensagem?: string) {
-    this.setarMensagem(AlertaToastr.WARNING, mensagem,titulo,posicaoMensagem);
+  warningMessage(mensagem: string, titulo?: string, toastPosition?: string) {
+    this.setarMensagem(AlertaToastr.WARNING, mensagem,titulo,toastPosition);
   }
 
-  private setarMensagem(tipoMessagem: string, mensagem: string, titulo?: string, posicaoMensagem?: string) {
+  private setarMensagem(tipoMessagem: string, mensagem: string, titulo?: string, toastPosition?: string) {
     this.typeMessage = tipoMessagem;
     this.message = mensagem;
     titulo ? this.title = titulo : null
-    posicaoMensagem ? this.positionClass = posicaoMensagem : null;
+    toastPosition ? this.positionClass = toastPosition : null;
 
     this.showToast()
   }
@@ -82,16 +82,13 @@ export class ToastMessageService {
   }
 
   positionTopLeft(): string {
-    return "toast-top-center";
+    return "toast-top-left";
   }
   positionTopCenter(): string {
     return "toast-top-center";
   }
   positionTopRight(): string {
-    return "toast-top-center";
+    return "toast-top-right";
   }
-  // positionTopCenter(): string {
-  //   return "toast-top-center";
-  // }
 }
 

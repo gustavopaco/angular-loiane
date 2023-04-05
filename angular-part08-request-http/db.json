@@ -13,16 +13,12 @@
       "id": 3
     },
     {
-      "nome": "HTML",
-      "id": 4
+      "id": 4,
+      "nome": "HTML2"
     },
     {
-      "nome": "Javascript",
-      "id": 5
-    },
-    {
-      "nome": "React",
-      "id": 6
+      "id": 5,
+      "nome": "MongoDB2"
     }
   ]
 }

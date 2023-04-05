@@ -4,7 +4,7 @@ import {BsModalRef} from "ngx-bootstrap/modal";
 @Component({
   selector: 'app-alert-modal',
   templateUrl: './alert-modal.component.html',
-  styleUrls: [ '../../../assets/css/pagina-inicial.min.css'
+  styleUrls: [ '../../../../../assets/css/pagina-inicial.min.css'
   ]
 })
 export class AlertModalComponent {
