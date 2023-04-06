@@ -15,11 +15,23 @@ app.use(bodyParser.urlencoded({extended : true}));
 // app.use(cors(corsOptions));
 
 const multipartMiddleware = multipart({uploadDir: './uploads'});
+
+app.get('/downloadExcel',(req, res) => {
+    res.download('./uploads/rentabilidade-gpu.xlsx');
+});
+
+app.get('/downloadPdf', (req, res) => {
+    res.download('./uploads/relatorio.pdf')
+});
+
+
+
 app.post('/upload', multipartMiddleware, (req, res) => {
     const files = req.files;
     console.log(files);
     res.json({message: files})
 });
+
 
 app.use((err, req, res, next) => res.json({ error: err.message}));
 

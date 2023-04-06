@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable, take} from "rxjs";
 
 @Injectable({
@@ -9,31 +9,31 @@ export class CrudService<T> {
 
   constructor(protected requestApi: HttpClient, @Inject('API_URL') private API_URL: string) { }
 
-  getRecords(): Observable<T[]> {
-    return this.requestApi.get<T[]>(this.API_URL);
+  getRecords(params?: HttpParams): Observable<T[]> {
+    return this.requestApi.get<T[]>(this.API_URL, {params});
   }
 
-  loadById(id: number): Observable<T> {
-    return this.requestApi.get<T>(`${this.API_URL}/${id}`).pipe(take(1));
+  loadById(id: number, params?: HttpParams): Observable<T> {
+    return this.requestApi.get<T>(`${this.API_URL}/${id}`, {params}).pipe(take(1));
   }
 
-  saveRecord(record: any): Observable<void> {
+  saveRecord(record: any, params?: HttpParams): Observable<void> {
     if (record.id) {
-      return this.updateRecord(record);
+      return this.updateRecord(record, params);
     } else {
-      return this.addRecord(record);
+      return this.addRecord(record, params);
     }
   }
 
-  removeRecord(id: number): Observable<void> {
-    return this.requestApi.delete<void>(`${this.API_URL}/${id}`).pipe(take(1))
+  removeRecord(id: number, params?: HttpParams): Observable<void> {
+    return this.requestApi.delete<void>(`${this.API_URL}/${id}`, {params}).pipe(take(1))
   }
 
-  private addRecord(record: any): Observable<void> {
-    return this.requestApi.post<void>(this.API_URL, record).pipe(take(1));
+  private addRecord(record: any, params?: HttpParams): Observable<void> {
+    return this.requestApi.post<void>(this.API_URL, record, {params}).pipe(take(1));
   }
 
-  private updateRecord(record: any): Observable<void> {
-    return this.requestApi.put<void>(`${this.API_URL}/${record.id}`, record).pipe(take(1));
+  private updateRecord(record: any, params?: HttpParams): Observable<void> {
+    return this.requestApi.put<void>(`${this.API_URL}/${record.id}`, record, {params}).pipe(take(1));
   }
 }
