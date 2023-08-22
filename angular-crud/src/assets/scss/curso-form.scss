@@ -1,0 +1,14 @@
+form {
+  width: 100%;
+  min-width: 150px;
+  max-width: 80%;
+  margin: 0 auto;
+  mat-form-field {
+
+    textarea {
+      height: 150px;
+      resize: none;
+    }
+  }
+}
+

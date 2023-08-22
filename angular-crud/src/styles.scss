@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use "@angular/material" as mat;
+@import "node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "assets/scss/reset-default-with-colors";
+@import "assets/scss/custom-scrollbar";
 @include mat.core();
 
 // Definindo as cores primarias, secundarias e erros de acordo com a paleta de cores
