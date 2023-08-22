@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Course } from '../model/course';
+import {Injectable} from '@angular/core';
+import {Course} from '../model/course';
 import {HttpClient} from "@angular/common/http";
 import {delay, Observable, take, tap} from "rxjs";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
-  private readonly API = 'assets/data/courses.json'
+  private readonly API = `${environment.API}/courses`
 
   constructor(private request: HttpClient) { }
 
