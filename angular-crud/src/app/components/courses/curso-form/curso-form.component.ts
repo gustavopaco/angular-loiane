@@ -1,5 +1,5 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -30,14 +30,15 @@ export class CursoFormComponent implements OnInit {
   formulario!: FormGroup;
   categories: CourseCategory[] = [];
 
-  isDisabledOnSubmit = this.formulario.invalid;
+  isDisabledOnSubmit : boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private fb: FormBuilder,
               private courseCategoryService: CourseCategoryService,
               private courseService: CoursesService,
               private router: Router,
-              private toastSnakebarService: ToastSnakebarService) {
+              private toastSnakebarService: ToastSnakebarService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -66,7 +67,7 @@ export class CursoFormComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.location.back();
   }
 
   private getCourseCategories() {
