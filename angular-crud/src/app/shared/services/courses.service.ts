@@ -11,10 +11,11 @@ export class CoursesService {
 
   private readonly API = `${environment.API}/courses`
 
-  constructor(private request: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   getCourses(): Observable<Course[]> {
-    return this.request.get<Course[]>(this.API)
+    return this.httpClient.get<Course[]>(this.API)
       .pipe(
         take(1),
         delay(2000),
@@ -27,5 +28,9 @@ export class CoursesService {
     //   {id: 4, name: 'React', category: 'Front-end', description: 'Curso de React JS'},
     //   {id: 5, name: 'Vue', category: 'Front-end', description: 'Curso de Vue JS'},
     // ];
+  }
+
+  save(record: Object): Observable<void> {
+    return this.httpClient.post<void>(this.API, record).pipe(take(1));
   }
 }
