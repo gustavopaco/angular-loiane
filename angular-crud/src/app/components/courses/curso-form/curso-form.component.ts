@@ -30,7 +30,7 @@ export class CursoFormComponent implements OnInit {
   formulario!: FormGroup;
   categories: CourseCategory[] = [];
 
-  isDisabledOnSubmit : boolean = false;
+  isDisabledOnSubmit: boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private fb: FormBuilder,
@@ -45,6 +45,7 @@ export class CursoFormComponent implements OnInit {
     this.getParams();
     this.createForm();
     this.getCourseCategories();
+    this.onEdit();
   }
 
   private getParams(): void {
@@ -86,11 +87,27 @@ export class CursoFormComponent implements OnInit {
       this.courseService.save(this.formulario.value)
         .pipe(finalize(() => this.isDisabledOnSubmit = false))
         .subscribe({
-        next: () => {
-          this.toastSnakebarService.success('Curso salvo com sucesso!')
-          this.router.navigate(['/courses']);
-        },
-        error: (err) => this.toastSnakebarService.error(err.message)
+          next: () => {
+            this.onSaved();
+          },
+          error: (err) => this.toastSnakebarService.error(err.message)
+        });
+    }
+  }
+
+  private onSaved() {
+    if (this.formulario.value.id) {
+      this.toastSnakebarService.success('Curso atualizado com sucesso!')
+    } else {
+      this.toastSnakebarService.success('Curso salvo com sucesso!')
+    }
+    this.router.navigate(['/courses']);
+  }
+
+  private onEdit() {
+    if (this.params) {
+      this.courseService.getById(Number(this.params)).subscribe(course => {
+        this.formulario.patchValue(course);
       });
     }
   }

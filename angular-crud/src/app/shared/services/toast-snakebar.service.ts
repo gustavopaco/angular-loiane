@@ -40,7 +40,7 @@ export class ToastSnakebarService {
   }
 
   openSnackBar(message: string) {
-    this.snakeBar.open('Falhou', this.action, {
+    this.snakeBar.open(message, this.action, {
       duration: this.durationInSeconds,
       panelClass: this.panelClass,
       horizontalPosition: this.horizontalPosition,

@@ -30,7 +30,14 @@ export class CoursesService {
     // ];
   }
 
-  save(record: Object): Observable<void> {
+  getById(id: number): Observable<Course> {
+    return this.httpClient.get<Course>(`${this.API}/${id}`).pipe(take(1));
+  }
+
+  save(record: any): Observable<void> {
+    if (record['id']) {
+      return this.httpClient.put<void>(`${this.API}/${record['id']}`, record).pipe(take(1));
+    }
     return this.httpClient.post<void>(this.API, record).pipe(take(1));
   }
 }
