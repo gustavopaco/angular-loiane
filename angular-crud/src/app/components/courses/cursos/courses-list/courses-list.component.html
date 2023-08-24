@@ -1,0 +1,44 @@
+<mat-table [dataSource]="courses">
+  <!--Colunas-->
+  <!-- Position Column -->
+  <ng-container matColumnDef="id">
+    <mat-header-cell class="id-column" *matHeaderCellDef> Id</mat-header-cell>
+    <mat-cell class="id-column" *matCellDef="let course"> {{ course.id }} </mat-cell>
+  </ng-container>
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell class="justify-content-center" *matHeaderCellDef> Curso</mat-header-cell>
+    <mat-cell class="justify-content-center" *matCellDef="let course"> {{ course.name }} </mat-cell>
+  </ng-container>
+  <!-- Categoria Column -->
+  <ng-container matColumnDef="category">
+    <mat-header-cell class="justify-content-center" *matHeaderCellDef> Categoria</mat-header-cell>
+    <mat-cell class="justify-content-center" *matCellDef="let course">
+      <mat-icon aria-hidden="false"
+                aria-label="Categoria do Curso">{{ course?.courseCategory?.name | category}}</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <!-- Descrição Column -->
+  <ng-container matColumnDef="description">
+    <mat-header-cell class="justify-content-center" *matHeaderCellDef> Descrição</mat-header-cell>
+    <mat-cell class="justify-content-center" *matCellDef="let course"> {{ course.description }} </mat-cell>
+  </ng-container>
+  <!-- Adicionar Column -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell class="justify-content-center action-column" *matHeaderCellDef>
+      <button mat-mini-fab color="primary" [routerLink]="['new']">
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-header-cell>
+    <mat-cell class="justify-content-center action-column" *matCellDef="let course">
+      <button mat-mini-fab color="accent" class="me-2" [routerLink]="['edit/', course.id]">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-mini-fab color="warn" (click)="onDelete(course.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+</mat-table>

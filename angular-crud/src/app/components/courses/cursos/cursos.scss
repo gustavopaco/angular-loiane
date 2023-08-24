@@ -1,0 +1,14 @@
+mat-card {
+  max-width: 80%;
+  margin: 2em auto;
+  .loading-spinner {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 100px;
+    mat-spinner {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+
