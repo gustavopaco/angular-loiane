@@ -2,7 +2,7 @@ import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
@@ -22,12 +22,20 @@ import {ToastSnakebarService} from "../../../shared/services/toast-snakebar.serv
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatToolbarModule, MatButtonModule, MatSelectModule, FormularioDebugComponent, MatIconModule],
   templateUrl: './curso-form.component.html',
-  styleUrls: ['../../../../assets/scss/curso-form.scss']
+  styleUrls: ['./curso-form.scss']
 })
 export class CursoFormComponent implements OnInit {
+  formulario = this.fb.group({
+    id: new FormControl<number | null>(null),
+    name: ['', [Validators.required]],
+    description: ['', [Validators.required]],
+    courseCategory: new FormControl<CourseCategory | null>(null, [Validators.required]),
+  });
+
+  // formulario!: FormGroup;
+
   params!: string;
   destroyRef = inject(DestroyRef);
-  formulario!: FormGroup;
   categories: CourseCategory[] = [];
 
   isDisabledOnSubmit: boolean = false;
@@ -39,13 +47,15 @@ export class CursoFormComponent implements OnInit {
               private router: Router,
               private toastSnakebarService: ToastSnakebarService,
               private location: Location) {
+    // this.createForm();
   }
 
   ngOnInit(): void {
     this.getParams();
-    this.createForm();
     this.getCourseCategories();
     this.onEdit();
+    // this.formulario.value.id = 1;
+    // this.formulario.value.name = 'teste';
   }
 
   private getParams(): void {
@@ -55,16 +65,16 @@ export class CursoFormComponent implements OnInit {
   }
 
   private createForm(): void {
-    this.formulario = this.fb.group({
-      id: [null, []],
-      name: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      courseCategory: [null, [Validators.required]],
-      // courseCategory: this.fb.group({
-      //   id: [null, [Validators.required]],
-      //   name: [null, [Validators.required]],
-      // })
-    });
+    // this.formulario = this.fb.group({
+    //   id: [null, []],
+    //   name: [null, [Validators.required]],
+    //   description: [null, [Validators.required]],
+    //   courseCategory: [null, [Validators.required]],
+    //   // courseCategory: this.fb.group({
+    //   //   id: [null, [Validators.required]],
+    //   //   name: [null, [Validators.required]],
+    //   // })
+    // });
   }
 
   onCancel() {
