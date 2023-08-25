@@ -9,13 +9,13 @@ import {MatCardModule} from "@angular/material/card";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
-import {CourseCategoryService} from "../../../shared/services/course-category.service";
-import {CourseCategory} from "../../../shared/model/courseCategory";
-import {FormularioDebugComponent} from "../../../shared/components/formulario-debug/formulario-debug.component";
+import {CourseCategoryService} from "../../../../shared/services/course-category.service";
+import {CourseCategory} from "../../../../shared/model/courseCategory";
+import {FormularioDebugComponent} from "../../../../shared/components/formulario-debug/formulario-debug.component";
 import {MatIconModule} from "@angular/material/icon";
-import {CoursesService} from "../../../shared/services/courses.service";
+import {CoursesService} from "../../../../shared/services/courses.service";
 import {finalize} from "rxjs";
-import {ToastSnakebarService} from "../../../shared/services/toast-snakebar.service";
+import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.service";
 
 @Component({
   selector: 'app-curso-form',

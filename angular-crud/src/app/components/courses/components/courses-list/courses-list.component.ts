@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {CategoryPipe} from "../../../../shared/pipes/category.pipe";
 import {MatButtonModule} from "@angular/material/button";
@@ -16,17 +16,24 @@ import {RouterLink} from "@angular/router";
 })
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
+  @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
+  @Output() delete = new EventEmitter(false);
   columnsToDisplay = ['id', 'name', 'category', 'description', 'actions'];
 
   constructor() {
     // this.courses = [];
   }
 
-  onDelete(id: number) {
-    console.log("Chamou o delete para o id: " + id)
+  onAdd() {
+    this.add.emit(true);
   }
 
-  onAdd() {
-    // this.route.navigate(['new'], {relativeTo: this.activatedRoute})
+  onEdit(id: number) {
+    this.edit.emit(id);
+  }
+
+  onDelete(id: number) {
+    this.delete.emit(id);
   }
 }
