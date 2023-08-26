@@ -19,7 +19,7 @@ export class CoursesService {
       .pipe(
         take(1),
         delay(2000),
-        tap(console.log)
+        //tap(console.log)
       );
     // return [
     //   {id: 1, name: 'Angular', category: 'Front-end', description: 'Curso de Angular 16'},
@@ -36,8 +36,16 @@ export class CoursesService {
 
   save(record: any): Observable<void> {
     if (record['id']) {
-      return this.httpClient.put<void>(`${this.API}/${record['id']}`, record).pipe(take(1));
+        return this.update(record);
     }
+    return this.create(record);
+  }
+
+  private create(record: any): Observable<void> {
     return this.httpClient.post<void>(this.API, record).pipe(take(1));
+  }
+
+  private update(record: any): Observable<void> {
+    return this.httpClient.put<void>(`${this.API}/${record['id']}`, record).pipe(take(1));
   }
 }

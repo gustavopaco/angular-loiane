@@ -51,16 +51,16 @@ export class CursosComponent implements OnInit {
   }
 
   onAdd() {
-      console.log("Chamou o add");
+      // console.log("Chamou o add");
       this.router.navigate(['new'], {relativeTo: this.activatedRoute})
   }
 
   onEdit(id: number) {
-    console.log("Chamou o edit para o id: " + id)
+    // console.log("Chamou o edit para o id: " + id)
     this.router.navigate(['edit/', id], {relativeTo: this.activatedRoute})
   }
 
   onDelete(id: number) {
-    console.log("Chamou o delete para o id: " + id)
+    // console.log("Chamou o delete para o id: " + id)
   }
 }

@@ -1,8 +1,7 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
@@ -115,6 +114,7 @@ export class CursoFormComponent implements OnInit {
   }
 
   private onEdit() {
+    if (!this.activatedRoute.snapshot.params['id']) return;
     this.activatedRoute.data.pipe(take(1)).subscribe({
       next: (data) => {
         if (data['course']) this.formulario.patchValue(data['course'])
