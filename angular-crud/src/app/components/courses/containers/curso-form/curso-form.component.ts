@@ -14,7 +14,7 @@ import {CourseCategory} from "../../../../shared/model/courseCategory";
 import {FormularioDebugComponent} from "../../../../shared/components/formulario-debug/formulario-debug.component";
 import {MatIconModule} from "@angular/material/icon";
 import {CoursesService} from "../../../../shared/services/courses.service";
-import {finalize} from "rxjs";
+import {finalize, take} from "rxjs";
 import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.service";
 
 @Component({
@@ -51,7 +51,7 @@ export class CursoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getParams();
+    // this.getParams();
     this.getCourseCategories();
     this.onEdit();
     // this.formulario.value.id = 1;
@@ -59,9 +59,9 @@ export class CursoFormComponent implements OnInit {
   }
 
   private getParams(): void {
-    this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-      this.params = params['id'];
-    });
+    // this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
+    //   this.params = params['id'];
+    // });
   }
 
   private createForm(): void {
@@ -115,10 +115,16 @@ export class CursoFormComponent implements OnInit {
   }
 
   private onEdit() {
-    if (this.params) {
-      this.courseService.getById(Number(this.params)).subscribe(course => {
-        this.formulario.patchValue(course);
-      });
-    }
+    this.activatedRoute.data.pipe(take(1)).subscribe({
+      next: (data) => {
+        if (data['course']) this.formulario.patchValue(data['course'])
+      },
+      error: () => this.toastSnakebarService.error('Erro ao carregar curso!')
+    });
+    // if (this.params) {
+    //   this.courseService.getById(Number(this.params)).subscribe(course => {
+    //     this.formulario.patchValue(course);
+    //   });
+    // }
   }
 }

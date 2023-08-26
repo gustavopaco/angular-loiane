@@ -20,6 +20,9 @@
           "standalone": true,
           "skipTests": true
         },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
         "@schematics/angular:class": {
           "skipTests": true
         },
