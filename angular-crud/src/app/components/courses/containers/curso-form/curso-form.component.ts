@@ -15,6 +15,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {CoursesService} from "../../../../shared/services/courses.service";
 import {finalize, take} from "rxjs";
 import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.service";
+import {FormValidator} from "../../../../shared/validator/form-validator";
 
 @Component({
   selector: 'app-curso-form',
@@ -26,10 +27,10 @@ import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.s
 export class CursoFormComponent implements OnInit {
   formulario = this.fb.group({
     id: new FormControl<number | null>(null),
-    name: ['', [Validators.required]],
-    description: ['', [Validators.required]],
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
     courseCategory: this.fb.group({
-      id: new FormControl<number | null>(null)
+      id: new FormControl<number | null>(null, [Validators.required]),
     })
   });
 
@@ -128,5 +129,9 @@ export class CursoFormComponent implements OnInit {
     //     this.formulario.patchValue(course);
     //   });
     // }
+  }
+
+  matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string) : string {
+    return FormValidator.validateSmallGenericMessage(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
   }
 }
