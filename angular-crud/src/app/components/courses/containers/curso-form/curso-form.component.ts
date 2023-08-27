@@ -28,7 +28,9 @@ export class CursoFormComponent implements OnInit {
     id: new FormControl<number | null>(null),
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    courseCategory: new FormControl<CourseCategory | null>(null, [Validators.required]),
+    courseCategory: this.fb.group({
+      id: new FormControl<number | null>(null)
+    })
   });
 
   // formulario!: FormGroup;

@@ -48,4 +48,8 @@ export class CoursesService {
   private update(record: any): Observable<void> {
     return this.httpClient.put<void>(`${this.API}/${record['id']}`, record).pipe(take(1));
   }
+
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.API}/${id}`).pipe(take(1));
+  }
 }

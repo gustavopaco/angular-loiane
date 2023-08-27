@@ -5,11 +5,11 @@ import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition}
   providedIn: 'root'
 })
 export class ToastSnakebarService {
-  panelClass: string[] = ['toast-success'];
-  action = 'Fechar';
-  durationInSeconds = 3000;
-  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  private panelClass: string[] = ['toast-success'];
+  private action = 'Fechar';
+  private durationInSeconds = 3000;
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  private verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private snakeBar: MatSnackBar) {
   }
