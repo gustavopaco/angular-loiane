@@ -5,7 +5,7 @@
         <h1>Novo Curso</h1>
       </mat-toolbar>
     </mat-card-header>
-    <mat-card-content class="row">
+    <mat-card-content>
       <mat-form-field class="col-12">
         <mat-label>Digite o nome do curso</mat-label>
         <input matInput formControlName="name" placeholder="Nome do curso" #name>
@@ -25,9 +25,48 @@
         <mat-hint align="end">{{ description.value.length || 0 }}/255</mat-hint>
         <mat-error>{{ matErrorMessage('description', 'Descrição') }}</mat-error>
       </mat-form-field>
+      <mat-toolbar class="mb-2">
+        <h3>Aulas</h3>
+        <button mat-icon-button color="primary" type="button" (click)="addLesson()">
+          <mat-icon aria-label="Adicionar uma nova aula">add</mat-icon>
+        </button>
+      </mat-toolbar>
+      <mat-card class="mb-2" formArrayName="lessons" *ngFor="let lesson of lessons.controls; index as i">
+        <mat-card-header>Aula {{ i + 1}}</mat-card-header>
+        <mat-card-content [formGroupName]="i">
+          <div class="row">
+            <mat-form-field class="col-md-5">
+              <mat-label>Nome da aula</mat-label>
+              <input matInput formControlName="name" placeholder="Nome da aula" #nameCurso>
+              <mat-hint align="end">{{ nameCurso.value.length || 0 }}/100</mat-hint>
+              <mat-error>{{ matFormArrayErrorMessage('name', lesson, 'Nome da aula') }}</mat-error>
+            </mat-form-field>
+            <mat-form-field class="col-md-5" floatLabel="always">
+              <mat-label>URL</mat-label>
+              <input matInput formControlName="youtubeUrl" placeholder="zsxcRRX4tG8" #url>
+              <span matTextPrefix>https://youtu.be/</span>
+              <mat-hint align="end">{{ url.value.length || 0 }}/100</mat-hint>
+              <mat-error>{{ matFormArrayErrorMessage('youtubeUrl', lesson, 'URL') }}</mat-error>
+            </mat-form-field>
+            <div class="d-none d-md-block col-md-2">
+              <button mat-icon-button color="warn" type="button"
+                      (click)="removeLesson(i)">
+                <mat-icon aria-label="Remover aula">delete</mat-icon>
+              </button>
+            </div>
+            <div class="d-md-none btn-remove-lesson">
+              <button mat-icon-button color="warn" type="button"
+                      (click)="removeLesson(i)">
+                <mat-icon aria-label="Remover aula">close</mat-icon>
+              </button>
+            </div>
+          </div><!--row-->
+        </mat-card-content>
+      </mat-card>
     </mat-card-content>
     <mat-card-actions class="justify-content-end">
-      <button mat-raised-button color="primary" class="me-2" type="submit" [disabled]="formulario.invalid || isDisabledOnSubmit">
+      <button mat-raised-button color="primary" class="me-2" type="submit"
+              [disabled]="formulario.invalid || isDisabledOnSubmit">
         <mat-icon>save</mat-icon>
         Salvar
       </button>

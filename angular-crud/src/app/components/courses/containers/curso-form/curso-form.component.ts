@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
@@ -17,11 +17,16 @@ import {finalize, take} from "rxjs";
 import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.service";
 import {FormValidator} from "../../../../shared/validator/form-validator";
 import {Lesson} from "../../../../shared/model/lesson";
+import {MatTableModule} from "@angular/material/table";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import {
+  ConfirmationDialogComponent
+} from "../../../../shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-curso-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatToolbarModule, MatButtonModule, MatSelectModule, FormularioDebugComponent, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatToolbarModule, MatButtonModule, MatSelectModule, FormularioDebugComponent, MatIconModule, MatTableModule, MatDialogModule],
   templateUrl: './curso-form.component.html',
   styleUrls: ['./curso-form.scss']
 })
@@ -33,7 +38,7 @@ export class CursoFormComponent implements OnInit {
     courseCategory: this.fb.group({
       id: [0, [Validators.required]]
     }),
-    lessons: this.fb.array([null]),
+    lessons: this.fb.array([]),
   });
 
   destroyRef = inject(DestroyRef);
@@ -47,10 +52,12 @@ export class CursoFormComponent implements OnInit {
               private courseService: CoursesService,
               private router: Router,
               private toastSnakebarService: ToastSnakebarService,
-              private location: Location) {
+              private location: Location,
+              private dialod: MatDialog) {
   }
 
   ngOnInit(): void {
+    this.addLesson();
     this.getCourseCategories();
     this.onEdit();
   }
@@ -59,17 +66,32 @@ export class CursoFormComponent implements OnInit {
     return this.formulario.get('lessons') as FormArray;
   }
 
-  addLesson(lesson: Lesson) {
+  addLesson(lesson?: Lesson) {
     const lessonForm = this.fb.group({
-      id: [lesson.id],
-      name: [lesson.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      youtubeUrl: [lesson.youtubeUrl, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      id: [lesson?.id],
+      name: [lesson?.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      youtubeUrl: [lesson?.youtubeUrl, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
     });
     this.lessons.push(lessonForm);
   }
 
+  private loadLessons(lessons: Lesson[]) {
+    this.lessons.clear();
+    lessons.forEach(lesson => {
+      this.addLesson(lesson);
+    });
+  }
+
   removeLesson(index: number) {
-    this.lessons.removeAt(index);
+    const matDialogRef = this.dialod.open(ConfirmationDialogComponent,{
+      data: { title: 'Excluir Aula', message: 'Deseja realmente excluir a aula?', btnConfirmLabel: 'Excluir', btnCancelLabel: 'Cancelar' },
+      enterAnimationDuration: 300,
+      exitAnimationDuration: 300,
+    });
+
+    matDialogRef.afterClosed().pipe(take(1)).subscribe((result: boolean) => {
+      if (result) {this.lessons.removeAt(index);}
+    });
   }
 
   onCancel() {
@@ -121,5 +143,9 @@ export class CursoFormComponent implements OnInit {
 
   matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string) : string {
     return FormValidator.validateSmallGenericMessage(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
+  }
+
+  matFormArrayErrorMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string) : string {
+    return FormValidator.validateSmallGenericMessageFormArray(formControlName, inputName, itemFormArray);
   }
 }
