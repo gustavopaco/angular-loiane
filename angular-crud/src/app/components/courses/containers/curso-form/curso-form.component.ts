@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
@@ -16,6 +16,7 @@ import {CoursesService} from "../../../../shared/services/courses.service";
 import {finalize, take} from "rxjs";
 import {ToastSnakebarService} from "../../../../shared/services/toast-snakebar.service";
 import {FormValidator} from "../../../../shared/validator/form-validator";
+import {Lesson} from "../../../../shared/model/lesson";
 
 @Component({
   selector: 'app-curso-form',
@@ -26,17 +27,15 @@ import {FormValidator} from "../../../../shared/validator/form-validator";
 })
 export class CursoFormComponent implements OnInit {
   formulario = this.fb.group({
-    id: new FormControl<number | null>(null),
+    id: [0],
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
     courseCategory: this.fb.group({
-      id: new FormControl<number | null>(null, [Validators.required]),
-    })
+      id: [0, [Validators.required]]
+    }),
+    lessons: this.fb.array([null]),
   });
 
-  // formulario!: FormGroup;
-
-  params!: string;
   destroyRef = inject(DestroyRef);
   categories: CourseCategory[] = [];
 
@@ -49,34 +48,28 @@ export class CursoFormComponent implements OnInit {
               private router: Router,
               private toastSnakebarService: ToastSnakebarService,
               private location: Location) {
-    // this.createForm();
   }
 
   ngOnInit(): void {
-    // this.getParams();
     this.getCourseCategories();
     this.onEdit();
-    // this.formulario.value.id = 1;
-    // this.formulario.value.name = 'teste';
   }
 
-  private getParams(): void {
-    // this.activatedRoute.params.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => {
-    //   this.params = params['id'];
-    // });
+  get lessons(): FormArray {
+    return this.formulario.get('lessons') as FormArray;
   }
 
-  private createForm(): void {
-    // this.formulario = this.fb.group({
-    //   id: [null, []],
-    //   name: [null, [Validators.required]],
-    //   description: [null, [Validators.required]],
-    //   courseCategory: [null, [Validators.required]],
-    //   // courseCategory: this.fb.group({
-    //   //   id: [null, [Validators.required]],
-    //   //   name: [null, [Validators.required]],
-    //   // })
-    // });
+  addLesson(lesson: Lesson) {
+    const lessonForm = this.fb.group({
+      id: [lesson.id],
+      name: [lesson.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      youtubeUrl: [lesson.youtubeUrl, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+    });
+    this.lessons.push(lessonForm);
+  }
+
+  removeLesson(index: number) {
+    this.lessons.removeAt(index);
   }
 
   onCancel() {
@@ -120,15 +113,10 @@ export class CursoFormComponent implements OnInit {
     if (!this.activatedRoute.snapshot.params['id']) return;
     this.activatedRoute.data.pipe(take(1)).subscribe({
       next: (data) => {
-        if (data['course']) this.formulario.patchValue(data['course'])
+        if (data['course']) this.formulario.patchValue(data['course']);
       },
       error: () => this.toastSnakebarService.error('Erro ao carregar curso!')
     });
-    // if (this.params) {
-    //   this.courseService.getById(Number(this.params)).subscribe(course => {
-    //     this.formulario.patchValue(course);
-    //   });
-    // }
   }
 
   matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string) : string {

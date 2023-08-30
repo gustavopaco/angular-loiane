@@ -30,5 +30,5 @@ mat-table {
 .id-column {
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: fit-content;
+  min-width: 70px;
 }

@@ -9,7 +9,7 @@
       <mat-form-field class="col-12">
         <mat-label>Digite o nome do curso</mat-label>
         <input matInput formControlName="name" placeholder="Nome do curso" #name>
-        <mat-hint align="end">{{ name.value?.length || 0 }}/100</mat-hint>
+        <mat-hint align="end">{{ name.value.length || 0 }}/100</mat-hint>
         <mat-error>{{ matErrorMessage('name', 'Nome') }}</mat-error>
       </mat-form-field>
       <mat-form-field class="col-12" formGroupName="courseCategory">
@@ -22,7 +22,7 @@
       <mat-form-field class="col-12">
         <mat-label>Descrição do curso</mat-label>
         <textarea matInput formControlName="description" placeholder="Descrição do curso" #description></textarea>
-        <mat-hint align="end">{{ description.value?.length || 0 }}/255</mat-hint>
+        <mat-hint align="end">{{ description.value.length || 0 }}/255</mat-hint>
         <mat-error>{{ matErrorMessage('description', 'Descrição') }}</mat-error>
       </mat-form-field>
     </mat-card-content>

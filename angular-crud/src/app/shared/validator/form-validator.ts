@@ -1,13 +1,12 @@
 import {AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {Subscription} from "rxjs";
-// import {map, Observable} from "rxjs";
-// import {VerificaEmailService} from "../service/verifica-email.service";
 
 export class FormValidator {
   static validateInputNgClass(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'is-valid'
-    } else if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
+    }
+    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
       return 'is-invalid'
     }
     return '';
@@ -16,7 +15,8 @@ export class FormValidator {
   static validateInputNgClassPENDING(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'is-valid'
-    } else if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input) || input.pending) {
+    }
+    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input) || input.pending) {
       return 'is-invalid'
     }
     return '';
@@ -26,7 +26,8 @@ export class FormValidator {
   static validateLabelNgClass(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'valid-feedback'
-    } else if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
+    }
+    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
       return 'invalid-feedback'
     }
     return '';
@@ -43,33 +44,46 @@ export class FormValidator {
   static validateSmallBasicMessage(formSubmitted: boolean, input: FormControl): string {
     if (input.valid) {
       return 'Válido';
-    } else if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
-      return '*Campo obrigatório';
-    } else {
-      return 'Campo inválido';
     }
+    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
+      return '*Campo obrigatório';
+    }
+    return 'Campo inválido';
   }
 
   static validateSmallGenericMessage(input: FormControl, inputName: string, inputNameEqualsTo?: string): string {
     if (input?.errors) {
-      return input.hasError('required') ? `*${inputName} obrigatório.`
-        : input.hasError("mask") ? `*${inputName} obrigatório.`
-        : input.hasError('minlength') ? `*Mínimo de ${input.errors['minlength']['requiredLength']} caracteres.`
-          : input.hasError('maxlength') ? `*Máximo de ${input.errors['maxlength']['requiredLength']} caracteres.`
-            : input.hasError('email') ? `*E-mail inválido.`
-              : input.hasError('emailInUse') ? `*E-mail já existe.`
-                : input.hasError('cepInvalido') ? `*CEP inválido.`
-                : input.hasError('bsDate') ? `*Formato de data inválido.`
-                  : input.hasError('equalsTo') ? `*${inputName} e ${inputNameEqualsTo}, devem ser iguais.`
-                    : input.hasError('min') ? `*${inputName} deve ser maior ou igual a ${input.errors['min']['min']}`
-                      : input.hasError('max') ? `*${inputName} deve ser menor ou igual a ${input.errors['max']['max']}`
-                        : inputName
+      const errorMessages: Record<string, string> = {
+        required: `*${inputName} obrigatório.`,
+        mask: `*${inputName} inválido.`,
+        minlength: `*Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`,
+        maxlength: `*Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`,
+        email: `*E-mail inválido.`,
+        emailInUse: `*E-mail já existe.`,
+        cepInvalido: `*CEP inválido.`,
+        bsDate: `*Formato de data inválido.`,
+        equalsTo: `*${inputName} e ${inputNameEqualsTo}, devem ser iguais.`,
+        min: `*${inputName} deve ser maior ou igual a ${input.errors['min']?.min}.`,
+        max: `*${inputName} deve ser menor ou igual a ${input.errors['max']?.max}.`
+      }
+      return this.loopIntoInputErrors(input, inputName, errorMessages)
     }
-    return `${inputName} Válido`
+    return `${inputName} válido`;
   }
 
-  static validateSmallGenericMessageFormArray(input: string, inputName: string, itemFormArray: AbstractControl , inputNameEqualsTo?: string): string {
-    return this.validateSmallGenericMessage(<FormControl> itemFormArray.get(input),inputName,inputNameEqualsTo)
+  private static loopIntoInputErrors(input: FormControl, inputName: string, errorMessages: Record<string, string>): string {
+    if (input?.errors) {
+      for (let errorsKey in input.errors) {
+        if (input.errors.hasOwnProperty(errorsKey) && errorMessages.hasOwnProperty(errorsKey)) {
+          return errorMessages[errorsKey]
+        }
+      }
+    }
+    return `${inputName}`
+  }
+
+  static validateSmallGenericMessageFormArray(input: string, inputName: string, itemFormArray: AbstractControl, inputNameEqualsTo?: string): string {
+    return this.validateSmallGenericMessage(<FormControl>itemFormArray.get(input), inputName, inputNameEqualsTo)
   }
 
   static validateGenericIsFormSubmitted(formSubmitted: boolean, input: FormControl): boolean {
@@ -105,7 +119,7 @@ export class FormValidator {
   static validateSmallBasicMinLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateHasMinLengthError(input)) {
       if (input.errors) {
-        return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
+        return `Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`
       }
     }
     return defaultMessage;
@@ -121,7 +135,7 @@ export class FormValidator {
   static validateSmallBasicMaxLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateHasMaxLengthError(input)) {
       if (input.errors) {
-        return `Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
+        return `Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`
       }
     }
     return defaultMessage;
@@ -130,11 +144,11 @@ export class FormValidator {
   static validateSmallBasicMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string): string {
     if (this.validateHasMinLengthError(input)) {
       if (input.errors) {
-        return `Mínimo de ${input.errors['minlength'].requiredLength} caracteres.`
+        return `Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`
       }
     } else if (this.validateHasMaxLengthError(input)) {
       if (input.errors) {
-        return `Máximo de ${input.errors['maxlength'].requiredLength} caracteres.`
+        return `Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`
       }
     }
     return defaultMessage;
@@ -166,11 +180,19 @@ export class FormValidator {
   }
 
   static validateSmallGenericEmailInUseMessageCustom(input: FormControl, defaultMessage: string): string {
-    return input.status == 'PENDING' ? 'Verificando'
-      : input.valid ? 'E-mail válido'
-        : input.hasError('email') ? 'E-mail inválido'
-          : input.hasError('emailInUse') ? 'E-mail já existe'
-            : defaultMessage
+    if (input.status == 'PENDING') {
+      return 'Verificando';
+    }
+    if (input.hasError('email')) {
+      return 'E-mail inválido';
+    }
+    if (input.hasError('emailInUse')) {
+      return 'E-mail já existe';
+    }
+    if (input.valid) {
+      return 'E-mail válido';
+    }
+    return defaultMessage;
   }
 
 
@@ -199,8 +221,8 @@ export class FormValidator {
 
   static formBuilderValidateCep(input: FormControl) {
     if (input.value != undefined && input.value != "") {
-      const validacep = /^[0-9]{5}-[0-9]{3}$/;
-      const validacep2 = /^[0-9]{8}$/;
+      const validacep = /^\d{5}-\d{3}$/;
+      const validacep2 = /^\d{8}$/;
       return (validacep.test(input.value) || validacep2.test(input.value)) ? null : {cepInvalido: true}
     }
     return null;
@@ -234,18 +256,19 @@ export class FormValidator {
   // }
 
   static formBuilderValidatePasswordRegex(control: AbstractControl) {
-      const password = control.value;
-      const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~<>,.?/\\[\]{}|])[A-Za-z\d!@#$%^&*()_+~<>?,.:;"{}\\[\]\\/|]{8,}/;
-      return validPassword.test(password) ? null : {passwordInvalid: true}
+    const password = control.value;
+    const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~<>,.?/[\]{}|])[A-Za-z\d!@#$%^&*()_+~<>?,.:;"{}\\[\]/|]{8,}/;
+
+    return validPassword.test(password) ? null : {passwordInvalid: true}
   }
 
   static validateConfirmPasswordEqualsTo(formulario: FormGroup): Subscription {
     return formulario.get('confirmPassword')!.valueChanges.subscribe(() => {
-        FormValidator.validateEqualsTo(formulario);
+      FormValidator.validateEqualsTo(formulario);
     });
   }
 
-  static validatePasswordEqualsTo = (formulario: FormGroup) : Subscription => {
+  static validatePasswordEqualsTo = (formulario: FormGroup): Subscription => {
     return formulario.get('password')!.valueChanges.subscribe(() => {
       if (formulario.get('password')?.valid) {
         FormValidator.validateEqualsTo(formulario);
@@ -268,10 +291,8 @@ export class FormValidator {
       if (email && (email.includes('.com') || email.includes('.com.br'))) {
         return null; // O e-mail é válido
       } else {
-        return { email: true }; // O e-mail é inválido
+        return {email: true}; // O e-mail é inválido
       }
     };
   }
-
-
 }
