@@ -31,37 +31,40 @@
           <mat-icon aria-label="Adicionar uma nova aula">add</mat-icon>
         </button>
       </mat-toolbar>
-      <mat-card class="mb-2" formArrayName="lessons" *ngFor="let lesson of lessons.controls; index as i">
-        <mat-card-header>Aula {{ i + 1}}</mat-card-header>
-        <mat-card-content [formGroupName]="i">
-          <div class="row">
-            <mat-form-field class="col-md-5">
-              <mat-label>Nome da aula</mat-label>
-              <input matInput formControlName="name" placeholder="Nome da aula" #nameCurso>
-              <mat-hint align="end">{{ nameCurso.value.length || 0 }}/100</mat-hint>
-              <mat-error>{{ matFormArrayErrorMessage('name', lesson, 'Nome da aula') }}</mat-error>
-            </mat-form-field>
-            <mat-form-field class="col-md-5" floatLabel="always">
-              <mat-label>URL</mat-label>
-              <input matInput formControlName="youtubeUrl" placeholder="zsxcRRX4tG8" #url>
-              <span matTextPrefix>https://youtu.be/</span>
-              <mat-hint align="end">{{ url.value.length || 0 }}/100</mat-hint>
-              <mat-error>{{ matFormArrayErrorMessage('youtubeUrl', lesson, 'URL') }}</mat-error>
-            </mat-form-field>
-            <div class="d-none d-md-block col-md-2">
-              <button mat-icon-button color="warn" type="button"
-                      (click)="removeLesson(i)">
-                <mat-icon aria-label="Remover aula">delete</mat-icon>
-              </button>
-            </div>
-            <div class="d-md-none btn-remove-lesson">
-              <button mat-icon-button color="warn" type="button"
-                      (click)="removeLesson(i)">
-                <mat-icon aria-label="Remover aula">close</mat-icon>
-              </button>
-            </div>
-          </div><!--row-->
-        </mat-card-content>
+      <mat-error *ngIf="isMatErrorFormArrayRequired()">*Adicione pelo menos 1 aula.</mat-error>
+      <mat-card>
+        <div formArrayName="lessons" *ngFor="let lesson of lessons.controls; index as i">
+          <mat-card-header>Aula {{ i + 1}}</mat-card-header>
+          <mat-card-content [formGroupName]="i">
+            <div class="row">
+              <mat-form-field class="col-md-5">
+                <mat-label>Nome da aula</mat-label>
+                <input matInput formControlName="name" placeholder="Nome da aula" #nameCurso>
+                <mat-hint align="end">{{ nameCurso.value.length || 0 }}/100</mat-hint>
+                <mat-error>{{ matErrorFormArrayMessage('name', lesson, 'Nome da aula') }}</mat-error>
+              </mat-form-field>
+              <mat-form-field class="col-md-5" floatLabel="always">
+                <mat-label>URL</mat-label>
+                <input matInput formControlName="youtubeUrl" placeholder="zsxcRRX4tG8" #url>
+                <span matTextPrefix>https://youtu.be/</span>
+                <mat-hint align="end">{{ url.value.length || 0 }}/11</mat-hint>
+                <mat-error>{{ matErrorFormArrayMessage('youtubeUrl', lesson, 'URL') }}</mat-error>
+              </mat-form-field>
+              <div class="d-none d-md-block col-md-2">
+                <button mat-icon-button color="warn" type="button"
+                        (click)="removeLesson(i)">
+                  <mat-icon aria-label="Remover aula">delete</mat-icon>
+                </button>
+              </div>
+              <div class="d-md-none btn-remove-lesson">
+                <button mat-icon-button color="warn" type="button"
+                        (click)="removeLesson(i)">
+                  <mat-icon aria-label="Remover aula">close</mat-icon>
+                </button>
+              </div>
+            </div><!--row-->
+          </mat-card-content>
+        </div><!--formArray-->
       </mat-card>
     </mat-card-content>
     <mat-card-actions class="justify-content-end">

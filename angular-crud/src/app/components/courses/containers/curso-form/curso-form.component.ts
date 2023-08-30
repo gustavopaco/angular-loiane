@@ -32,13 +32,13 @@ import {
 })
 export class CursoFormComponent implements OnInit {
   formulario = this.fb.group({
-    id: [0],
+    id: [null],
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
     courseCategory: this.fb.group({
-      id: [0, [Validators.required]]
+      id: [null, [Validators.required]]
     }),
-    lessons: this.fb.array([]),
+    lessons: this.fb.array([], [Validators.required]),
   });
 
   destroyRef = inject(DestroyRef);
@@ -145,7 +145,11 @@ export class CursoFormComponent implements OnInit {
     return FormValidator.validateSmallGenericMessage(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
   }
 
-  matFormArrayErrorMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string) : string {
+  matErrorFormArrayMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string) : string {
     return FormValidator.validateSmallGenericMessageFormArray(formControlName, inputName, itemFormArray);
+  }
+
+  isMatErrorFormArrayRequired() : boolean {
+    return this.lessons.invalid && this.lessons.hasError('required');
   }
 }
