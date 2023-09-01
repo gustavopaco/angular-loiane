@@ -2,206 +2,172 @@ import {AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Va
 import {Subscription} from "rxjs";
 
 export class FormValidator {
-  static validateInputNgClass(formSubmitted: boolean, input: FormControl): string {
-    if (input.valid) {
-      return 'is-valid'
-    }
-    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
-      return 'is-invalid'
-    }
-    return '';
+  static validateRulesIsInvalidAndFormSubmitted(formSubmitted: boolean, formControl: FormControl): boolean {
+    return (formSubmitted && formControl.invalid);
   }
 
-  static validateInputNgClassPENDING(formSubmitted: boolean, input: FormControl): string {
-    if (input.valid) {
-      return 'is-valid'
-    }
-    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input) || input.pending) {
-      return 'is-invalid'
-    }
-    return '';
+  static validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted: boolean, formControl: FormControl): boolean {
+    return (formControl.dirty && formControl.invalid || formSubmitted && formControl.invalid);
   }
 
+  private static validateRulesIsInvalidAndDirty(formControl: FormControl): boolean {
+    return (formControl.dirty && formControl.invalid)
+  }
 
-  static validateLabelNgClass(formSubmitted: boolean, input: FormControl): string {
-    if (input.valid) {
+  static validateLabelNgClass(formSubmitted: boolean, formControl: FormControl): string {
+    if (formControl.valid) {
       return 'valid-feedback'
     }
-    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
+    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
       return 'invalid-feedback'
     }
     return '';
   }
 
-  static validateLabelInterpolation(formSubmitted: boolean, input: FormControl, inputName: string) {
-    return this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input) ? `*${inputName} obrigatório.` : inputName
+  static validateLabelInterpolation(formSubmitted: boolean, formControl: FormControl, fieldName: string) {
+    return this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl) ? `*${fieldName} obrigatório.` : fieldName
   }
 
-  static validateSmallNgClass(input: FormControl): string {
-    return input.valid ? 'valid-feedback' : 'invalid-feedback'
+  static validateInputNgClass(formSubmitted: boolean, formControl: FormControl): string {
+    if (formControl.valid) {
+      return 'is-valid'
+    }
+    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
+      return 'is-invalid'
+    }
+    return '';
   }
 
-  static validateSmallBasicMessage(formSubmitted: boolean, input: FormControl): string {
-    if (input.valid) {
+  static validateInputNgClassPending(formSubmitted: boolean, formControl: FormControl): string {
+    if (formControl.valid) {
+      return 'is-valid'
+    }
+    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl) || formControl.pending) {
+      return 'is-invalid'
+    }
+    return '';
+  }
+
+  static validateInputPasswordEqualsTo = (formulario: FormGroup): Subscription => {
+    return formulario.get('password')!.valueChanges.subscribe(() => {
+      if (formulario.get('password')?.valid) {
+        FormValidator.validateInputEqualsTo(formulario);
+      }
+    });
+  }
+
+  static validateInputConfirmPasswordEqualsTo(formulario: FormGroup): Subscription {
+    return formulario.get('confirmPassword')!.valueChanges.subscribe(() => {
+      FormValidator.validateInputEqualsTo(formulario);
+    });
+  }
+
+  private static validateInputEqualsTo(formulario: FormGroup) {
+    if (formulario.get('confirmPassword')?.dirty && formulario.get('password')?.value !== formulario.get('confirmPassword')?.value) {
+      formulario.get('confirmPassword')?.setErrors({equalsTo: true})
+    } else if (formulario.get('confirmPassword')?.dirty && formulario.get('password')?.value === formulario.get('confirmPassword')?.value) {
+      formulario.get('confirmPassword')?.setErrors(null)
+    }
+  }
+
+  static validateSmallNgClass(formControl: FormControl): string {
+    return formControl.valid ? 'valid-feedback' : 'invalid-feedback'
+  }
+
+  static validateSmallBasicInterpolation(formSubmitted: boolean, formControl: FormControl): string {
+    if (formControl.valid) {
       return 'Válido';
     }
-    if (this.validateGenericIsInputDirtyOrFormSubmitted(formSubmitted, input)) {
+    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
       return '*Campo obrigatório';
     }
     return 'Campo inválido';
   }
 
-  static validateSmallGenericMessage(input: FormControl, inputName: string, inputNameEqualsTo?: string): string {
-    if (input?.errors) {
-      const errorMessages: Record<string, string> = {
-        required: `*${inputName} obrigatório.`,
-        mask: `*${inputName} inválido.`,
-        minlength: `*Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`,
-        maxlength: `*Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`,
-        email: `*E-mail inválido.`,
-        emailInUse: `*E-mail já existe.`,
-        cepInvalido: `*CEP inválido.`,
-        bsDate: `*Formato de data inválido.`,
-        equalsTo: `*${inputName} e ${inputNameEqualsTo}, devem ser iguais.`,
-        min: `*${inputName} deve ser maior ou igual a ${input.errors['min']?.min}.`,
-        max: `*${inputName} deve ser menor ou igual a ${input.errors['max']?.max}.`
-      }
-      return this.loopIntoInputErrors(input, inputName, errorMessages)
-    }
-    return `${inputName} válido`;
-  }
-
-  private static loopIntoInputErrors(input: FormControl, inputName: string, errorMessages: Record<string, string>): string {
-    if (input?.errors) {
-      for (let errorsKey in input.errors) {
-        if (input.errors.hasOwnProperty(errorsKey) && errorMessages.hasOwnProperty(errorsKey)) {
-          return errorMessages[errorsKey]
-        }
-      }
-    }
-    return `${inputName}`
-  }
-
-  static validateSmallGenericMessageFormArray(input: string, inputName: string, itemFormArray: AbstractControl, inputNameEqualsTo?: string): string {
-    return this.validateSmallGenericMessage(<FormControl>itemFormArray.get(input), inputName, inputNameEqualsTo)
-  }
-
-  static validateGenericIsFormSubmitted(formSubmitted: boolean, input: FormControl): boolean {
-    return (formSubmitted && input.invalid);
-  }
-
-  static validateGenericIsInputDirtyOrFormSubmitted(formSubmitted: boolean, input: FormControl): boolean {
-    return (input.dirty && input.invalid || formSubmitted && input.invalid);
-  }
-
-  private static validateGenericIsDirtyAndInvalid(input: FormControl): boolean {
-    return (input.dirty && input.invalid)
-  }
-
-  static validateHasMailError(input: FormControl): boolean {
-    if (input.errors) {
-      return (this.validateGenericIsDirtyAndInvalid(input) && input.errors['email'])
-    }
-    return false
-  }
-
-  static validateSmallBasicMailInvalidMessage(input: FormControl, defaultMessage: string): string {
-    return (this.validateHasMailError(input) ? 'E-mail inválido' : defaultMessage)
-  }
-
-  static validateHasMinLengthError(input: FormControl): boolean {
-    if (input.errors) {
-      return (this.validateGenericIsDirtyAndInvalid(input) && input.errors['minlength'])
-    }
-    return false
-  }
-
-  static validateSmallBasicMinLengthMessage(input: FormControl, defaultMessage: string): string {
-    if (this.validateHasMinLengthError(input)) {
-      if (input.errors) {
-        return `Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`
-      }
-    }
-    return defaultMessage;
-  }
-
-  static validateHasMaxLengthError(input: FormControl): boolean {
-    if (input.errors) {
-      return (this.validateGenericIsDirtyAndInvalid(input) && input.errors['maxlength'])
-    }
-    return false
-  }
-
-  static validateSmallBasicMaxLengthMessage(input: FormControl, defaultMessage: string): string {
-    if (this.validateHasMaxLengthError(input)) {
-      if (input.errors) {
-        return `Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`
-      }
-    }
-    return defaultMessage;
-  }
-
-  static validateSmallBasicMinLengthOrMaxLengthMessage(input: FormControl, defaultMessage: string): string {
-    if (this.validateHasMinLengthError(input)) {
-      if (input.errors) {
-        return `Mínimo de ${input.errors['minlength']?.requiredLength} caracteres.`
-      }
-    } else if (this.validateHasMaxLengthError(input)) {
-      if (input.errors) {
-        return `Máximo de ${input.errors['maxlength']?.requiredLength} caracteres.`
-      }
-    }
-    return defaultMessage;
-  }
-
-  static validateInputNgClassFormArray(input: string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
-    return this.validateInputNgClass(formSubmitted, (<FormControl>itemFormArray.get(input)));
-  }
-
-  static validateInputNgClassFormArray2(input: string, formSubmitted: boolean, formArray: FormArray, index: number): string {
-    // let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
-    let inputFormControl = formArray.get(String(index))?.get(input) as FormControl
-    return this.validateInputNgClass(formSubmitted, inputFormControl);
-  }
-
-  /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateMinCheckBox seja aplicado no FormBuilder*/
-  static validateInputAndDivParentNgClassMinCheckBoxCustom(formSubmitted: boolean, formArray: FormArray): string {
-    return (formArray.dirty && formArray.invalid || formSubmitted && formArray.invalid) ? 'is-invalid' : '';
-  }
-
-  /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateCep seja aplicado no FormBuilder*/
-  static validateSmallBasicCepInvalidMessageCustom(input: FormControl, defaultMessage: string): string {
-    return input.hasError('cepInvalido') ? "CEP inválido" : defaultMessage;
-  }
-
-  /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateEqualsTo seja aplicado no FormBuilder*/
-  static validateSmallBasicIsEqualsToMessageCustom(input: FormControl, defaultMessage: string): string {
-    return input.hasError('required') ? defaultMessage : 'E-mail e Confirmar E-mail são diferentes';
-  }
-
-  static validateSmallGenericEmailInUseMessageCustom(input: FormControl, defaultMessage: string): string {
-    if (input.status == 'PENDING') {
+  static validateSmallEmailOrEmailInUsePending(formControl: FormControl, defaultMessage: string): string {
+    if (formControl.status == 'PENDING') {
       return 'Verificando';
     }
-    if (input.hasError('email')) {
+    if (formControl.hasError('email')) {
       return 'E-mail inválido';
     }
-    if (input.hasError('emailInUse')) {
+    if (formControl.hasError('emailInUse')) {
       return 'E-mail já existe';
     }
-    if (input.valid) {
+    if (formControl.valid) {
       return 'E-mail válido';
     }
     return defaultMessage;
   }
 
+  static validateSmallGenericInterpolation(formControl: FormControl, fieldName: string, fieldNameEqualsTo?: string): string {
+    if (formControl?.errors) {
+      const errorMessages: Record<string, string> = {
+        required: `*${fieldName} obrigatório.`,
+        mask: `*${fieldName} inválido.`,
+        minlength: `*Mínimo de ${formControl.errors['minlength']?.requiredLength} caracteres.`,
+        maxlength: `*Máximo de ${formControl.errors['maxlength']?.requiredLength} caracteres.`,
+        email: `*E-mail inválido.`,
+        emailInUse: `*E-mail já existe.`,
+        cepInvalido: `*CEP inválido.`,
+        bsDate: `*Formato de data inválido.`,
+        equalsTo: `*${fieldName} e ${fieldNameEqualsTo}, devem ser iguais.`,
+        min: `*${fieldName} deve ser maior ou igual a ${formControl.errors['min']?.min}.`,
+        max: `*${fieldName} deve ser menor ou igual a ${formControl.errors['max']?.max}.`,
+      }
+      return this.loopIntoSmallInterpolationInputErrors(formControl, fieldName, errorMessages)
+    }
+    return `${fieldName} válido`;
+  }
+
+  private static loopIntoSmallInterpolationInputErrors(formControl: FormControl, fieldName: string, errorMessages: Record<string, string>): string {
+    if (formControl?.errors) {
+      for (let errorsKey in formControl.errors) {
+        if (formControl.errors.hasOwnProperty(errorsKey) && errorMessages.hasOwnProperty(errorsKey)) {
+          return errorMessages[errorsKey]
+        }
+      }
+    }
+    return `${fieldName}`
+  }
+
+  static validateFormArraySmallGenericInterpolation(formControlName: string, fieldName: string, itemFormArray: AbstractControl, fieldNameEqualsTo?: string): string {
+    return this.validateSmallGenericInterpolation(<FormControl>itemFormArray.get(formControlName), fieldName, fieldNameEqualsTo)
+  }
+
+  static validateFormArrayInputNgClass(formControlName: string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
+    return this.validateInputNgClass(formSubmitted, (<FormControl>itemFormArray.get(formControlName)));
+  }
+
+  static validateFormArrayInputNgClass2(formControlName: string, formSubmitted: boolean, formArray: FormArray, index: number): string {
+    // let inputFormControl = formulario.get(formArrayName)?.get(String(index))?.get(input) as FormControl;
+    let inputFormControl = formArray.get(String(index))?.get(formControlName) as FormControl
+    return this.validateInputNgClass(formSubmitted, inputFormControl);
+  }
+
+  /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateMinCheckBox seja aplicado no FormBuilder*/
+  static validateFormArrayInputNgClassIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted: boolean, formArray: FormArray): string {
+    return (formArray.dirty && formArray.invalid || formSubmitted && formArray.invalid) ? 'is-invalid' : '';
+  }
+
+  static validateFormBuilderCustomEmail(): ValidatorFn {
+    return (formControl: AbstractControl): ValidationErrors | null => {
+      const email: string = formControl.value;
+
+      if (email && (email.includes('.com') || email.includes('.com.br'))) {
+        return null; // O e-mail é válido
+      } else {
+        return {email: true}; // O e-mail é inválido
+      }
+    };
+  }
 
   /*Note: Metodo para FormArray de Booleans, usado na parte de Validators na criacao do formulario.array
   *  Nesse metodo estamos usando o itemArray.value como comparacao pq la dentro so tem true ou false por que é um Array de Boolean
   *  com isso podemos contar quantos valores sao true, e
   *  se a quantidade de valores TRUE for >= 1, que é o minimo setado na assinatura do metodo, entao esta valido
   *  senao colocamos o setamos o erro {required: true}*/
-  static formBuilderValidateMinCheckBox(minValid = 1) {
+  static validateFormBuilderMinCheckBox(minValid = 1) {
     return function (formArray: AbstractControl) {
       if (formArray instanceof FormArray) {
         // const totalChecked = formArray.controls
@@ -219,21 +185,21 @@ export class FormValidator {
     }
   }
 
-  static formBuilderValidateCep(input: FormControl) {
-    if (input.value != undefined && input.value != "") {
+  static validateFormBuilderCep(formControl: FormControl) {
+    if (formControl.value != undefined && formControl.value != "") {
       const validacep = /^\d{5}-\d{3}$/;
       const validacep2 = /^\d{8}$/;
-      return (validacep.test(input.value) || validacep2.test(input.value)) ? null : {cepInvalido: true}
+      return (validacep.test(formControl.value) || validacep2.test(formControl.value)) ? null : {cepInvalido: true}
     }
     return null;
   }
 
-  static formBuilderValidateEqualsTo(otherInput: string) {
+  static validateFormBuilderEqualsTo(otherFormControlName: string) {
     return function (formControl: FormControl) {
-      if (otherInput == null) {
+      if (otherFormControlName == null) {
         throw new Error("É necessário informar um campo para comparação do formBuilderValidateEqualsTo")
       }
-      const input = (formControl.root as FormGroup).get(otherInput)
+      const input = (formControl.root as FormGroup).get(otherFormControlName)
 
       if (input instanceof FormControl && !input) {
         throw new Error("Input informado como parâmetro otherInput do método formBuilderValidateEqualsTo não existe")
@@ -246,7 +212,7 @@ export class FormValidator {
   }
 
   // Note: Esta comentado porque VerificaEmailService nao existe. Para nao dar erro
-  // static formBuilderValidateEmailAsync(verificaEmailService: VerificaEmailService): AsyncValidatorFn {
+  // static validateFormBuilderEmailAsync(verificaEmailService: VerificaEmailService): AsyncValidatorFn {
   //   return (control: AbstractControl): Observable<ValidationErrors> => {
   //     return verificaEmailService.asyncValidateMail(control.value)
   //       .pipe(
@@ -255,44 +221,10 @@ export class FormValidator {
   //   }
   // }
 
-  static formBuilderValidatePasswordRegex(control: AbstractControl) {
-    const password = control.value;
+  static validateFormBuilderPasswordRegex(formControl: AbstractControl) {
+    const password = formControl.value;
     const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~<>,.?/[\]{}|])[A-Za-z\d!@#$%^&*()_+~<>?,.:;"{}\\[\]/|]{8,}/;
 
     return validPassword.test(password) ? null : {passwordInvalid: true}
-  }
-
-  static validateConfirmPasswordEqualsTo(formulario: FormGroup): Subscription {
-    return formulario.get('confirmPassword')!.valueChanges.subscribe(() => {
-      FormValidator.validateEqualsTo(formulario);
-    });
-  }
-
-  static validatePasswordEqualsTo = (formulario: FormGroup): Subscription => {
-    return formulario.get('password')!.valueChanges.subscribe(() => {
-      if (formulario.get('password')?.valid) {
-        FormValidator.validateEqualsTo(formulario);
-      }
-    });
-  };
-
-  private static validateEqualsTo(formulario: FormGroup) {
-    if (formulario.get('confirmPassword')?.dirty && formulario.get('password')?.value !== formulario.get('confirmPassword')?.value) {
-      formulario.get('confirmPassword')?.setErrors({equalsTo: true})
-    } else if (formulario.get('confirmPassword')?.dirty && formulario.get('password')?.value === formulario.get('confirmPassword')?.value) {
-      formulario.get('confirmPassword')?.setErrors(null)
-    }
-  }
-
-  static emailCustomValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const email: string = control.value;
-
-      if (email && (email.includes('.com') || email.includes('.com.br'))) {
-        return null; // O e-mail é válido
-      } else {
-        return {email: true}; // O e-mail é inválido
-      }
-    };
   }
 }

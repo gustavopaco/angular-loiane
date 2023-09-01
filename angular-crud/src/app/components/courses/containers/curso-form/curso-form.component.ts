@@ -142,11 +142,11 @@ export class CursoFormComponent implements OnInit {
   }
 
   matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string) : string {
-    return FormValidator.validateSmallGenericMessage(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
+    return FormValidator.validateSmallGenericInterpolation(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
   }
 
   matErrorFormArrayMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string) : string {
-    return FormValidator.validateSmallGenericMessageFormArray(formControlName, inputName, itemFormArray);
+    return FormValidator.validateFormArraySmallGenericInterpolation(formControlName, inputName, itemFormArray);
   }
 
   isMatErrorFormArrayRequired() : boolean {
