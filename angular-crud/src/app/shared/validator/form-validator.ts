@@ -2,11 +2,26 @@ import {AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Va
 import {Subscription} from "rxjs";
 
 export class FormValidator {
+  static validateAllFormFields(formGroup: FormGroup | FormArray) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        if (control.invalid) {
+          control.markAsDirty({onlySelf: true});
+        }
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      } else if (control instanceof FormArray) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
   static validateRulesIsInvalidAndFormSubmitted(formSubmitted: boolean, formControl: FormControl): boolean {
     return (formSubmitted && formControl.invalid);
   }
 
-  static validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted: boolean, formControl: FormControl): boolean {
+  static validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted: boolean, formControl: FormControl): boolean {
     return (formControl.dirty && formControl.invalid || formSubmitted && formControl.invalid);
   }
 
@@ -18,21 +33,21 @@ export class FormValidator {
     if (formControl.valid) {
       return 'valid-feedback'
     }
-    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
+    if (this.validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted, formControl)) {
       return 'invalid-feedback'
     }
     return '';
   }
 
   static validateLabelInterpolation(formSubmitted: boolean, formControl: FormControl, fieldName: string) {
-    return this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl) ? `*${fieldName} obrigatório.` : fieldName
+    return this.validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted, formControl) ? `*${fieldName} obrigatório.` : fieldName
   }
 
   static validateInputNgClass(formSubmitted: boolean, formControl: FormControl): string {
     if (formControl.valid) {
       return 'is-valid'
     }
-    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
+    if (this.validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted, formControl)) {
       return 'is-invalid'
     }
     return '';
@@ -42,7 +57,7 @@ export class FormValidator {
     if (formControl.valid) {
       return 'is-valid'
     }
-    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl) || formControl.pending) {
+    if (this.validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted, formControl) || formControl.pending) {
       return 'is-invalid'
     }
     return '';
@@ -78,13 +93,13 @@ export class FormValidator {
     if (formControl.valid) {
       return 'Válido';
     }
-    if (this.validateRulesIsInvalidAndDirtyOrFormSubmitted(formSubmitted, formControl)) {
+    if (this.validateRulesIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted, formControl)) {
       return '*Campo obrigatório';
     }
     return 'Campo inválido';
   }
 
-  static validateSmallEmailOrEmailInUsePending(formControl: FormControl, defaultMessage: string): string {
+  static validateSmallBasicInterpolationEmailOrEmailInUsePending(formControl: FormControl, defaultMessage: string): string {
     if (formControl.status == 'PENDING') {
       return 'Verificando';
     }
@@ -131,8 +146,12 @@ export class FormValidator {
     return `${fieldName}`
   }
 
-  static validateFormArraySmallGenericInterpolation(formControlName: string, fieldName: string, itemFormArray: AbstractControl, fieldNameEqualsTo?: string): string {
-    return this.validateSmallGenericInterpolation(<FormControl>itemFormArray.get(formControlName), fieldName, fieldNameEqualsTo)
+  static validaFormArrayRulesSuperIsRequired(formSubmitted: boolean, formArray: FormArray): boolean {
+    return formArray.touched && formArray.invalid && formArray.hasError('required') || formSubmitted && formArray.invalid && formArray.hasError('required');
+  }
+
+  static validateFormArraySuperNgClass(formSubmitted: boolean, formArray: FormArray): string {
+    return (formArray.dirty && formArray.invalid || formSubmitted && formArray.invalid) ? 'is-invalid' : '';
   }
 
   static validateFormArrayInputNgClass(formControlName: string, formSubmitted: boolean, itemFormArray: AbstractControl): string {
@@ -145,12 +164,11 @@ export class FormValidator {
     return this.validateInputNgClass(formSubmitted, inputFormControl);
   }
 
-  /*Obs: Para essa validacao CUSTOM funcionar no HTML precisamos que o metodo formBuilderValidateMinCheckBox seja aplicado no FormBuilder*/
-  static validateFormArrayInputNgClassIsInvalidAndDirtyOrIsInvalidAndFormSubmitted(formSubmitted: boolean, formArray: FormArray): string {
-    return (formArray.dirty && formArray.invalid || formSubmitted && formArray.invalid) ? 'is-invalid' : '';
+  static validateFormArraySmallGenericInterpolation(formControlName: string, fieldName: string, itemFormArray: AbstractControl, fieldNameEqualsTo?: string): string {
+    return this.validateSmallGenericInterpolation(<FormControl>itemFormArray.get(formControlName), fieldName, fieldNameEqualsTo)
   }
 
-  static validateFormBuilderCustomEmail(): ValidatorFn {
+  static validateFormBuilderControlCustomEmail(): ValidatorFn {
     return (formControl: AbstractControl): ValidationErrors | null => {
       const email: string = formControl.value;
 
@@ -167,7 +185,7 @@ export class FormValidator {
   *  com isso podemos contar quantos valores sao true, e
   *  se a quantidade de valores TRUE for >= 1, que é o minimo setado na assinatura do metodo, entao esta valido
   *  senao colocamos o setamos o erro {required: true}*/
-  static validateFormBuilderMinCheckBox(minValid = 1) {
+  static validateFormBuilderFormArrayMinCheckBox(minValid = 1) {
     return function (formArray: AbstractControl) {
       if (formArray instanceof FormArray) {
         // const totalChecked = formArray.controls
@@ -185,7 +203,7 @@ export class FormValidator {
     }
   }
 
-  static validateFormBuilderCep(formControl: FormControl) {
+  static validateFormBuilderControlCep(formControl: FormControl) {
     if (formControl.value != undefined && formControl.value != "") {
       const validacep = /^\d{5}-\d{3}$/;
       const validacep2 = /^\d{8}$/;
@@ -194,7 +212,7 @@ export class FormValidator {
     return null;
   }
 
-  static validateFormBuilderEqualsTo(otherFormControlName: string) {
+  static validateFormBuilderControlEqualsTo(otherFormControlName: string) {
     return function (formControl: FormControl) {
       if (otherFormControlName == null) {
         throw new Error("É necessário informar um campo para comparação do formBuilderValidateEqualsTo")
@@ -212,7 +230,7 @@ export class FormValidator {
   }
 
   // Note: Esta comentado porque VerificaEmailService nao existe. Para nao dar erro
-  // static validateFormBuilderEmailAsync(verificaEmailService: VerificaEmailService): AsyncValidatorFn {
+  // static validateFormBuilderAsyncEmail(verificaEmailService: VerificaEmailService): AsyncValidatorFn {
   //   return (control: AbstractControl): Observable<ValidationErrors> => {
   //     return verificaEmailService.asyncValidateMail(control.value)
   //       .pipe(
@@ -221,7 +239,7 @@ export class FormValidator {
   //   }
   // }
 
-  static validateFormBuilderPasswordRegex(formControl: AbstractControl) {
+  static validateFormBuilderControlPasswordRegex(formControl: AbstractControl) {
     const password = formControl.value;
     const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+~<>,.?/[\]{}|])[A-Za-z\d!@#$%^&*()_+~<>?,.:;"{}\\[\]/|]{8,}/;
 
