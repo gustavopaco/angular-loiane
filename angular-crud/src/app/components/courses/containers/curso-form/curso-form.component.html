@@ -14,7 +14,7 @@
       </mat-form-field>
       <mat-form-field class="col-12" formGroupName="courseCategory">
         <mat-label>Categoria</mat-label>
-        <mat-select formControlName="id" placeholder="Selecione uma categoria" [compareWith]="compareObj">
+        <mat-select formControlName="id" placeholder="Selecione uma categoria">
           <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
         </mat-select>
         <mat-error>{{ matErrorMessage('courseCategory.id', 'Categoria') }}</mat-error>
@@ -68,8 +68,7 @@
       </mat-card>
     </mat-card-content>
     <mat-card-actions class="justify-content-end">
-      <button mat-raised-button color="primary" class="me-2" type="submit"
-              [disabled]="formulario.invalid || isDisabledOnSubmit">
+      <button mat-raised-button color="primary" class="me-2" type="submit" [disabled]="isDisabledOnSubmit">
         <mat-icon>save</mat-icon>
         Salvar
       </button>

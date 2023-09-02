@@ -83,8 +83,13 @@ export class CursoFormComponent implements OnInit {
   }
 
   removeLesson(index: number) {
-    const matDialogRef = this.dialod.open(ConfirmationDialogComponent,{
-      data: { title: 'Excluir Aula', message: 'Deseja realmente excluir a aula?', btnConfirmLabel: 'Excluir', btnCancelLabel: 'Cancelar' },
+    const matDialogRef = this.dialod.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Excluir Aula',
+        message: 'Deseja realmente excluir a aula?',
+        btnConfirmLabel: 'Excluir',
+        btnCancelLabel: 'Cancelar'
+      },
       enterAnimationDuration: 300,
       exitAnimationDuration: 300,
     });
@@ -109,8 +114,8 @@ export class CursoFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.isDisabledOnSubmit = true;
     if (this.formulario.valid) {
+      this.isDisabledOnSubmit = true;
       this.courseService.save(this.formulario.value)
         .pipe(finalize(() => this.isDisabledOnSubmit = false))
         .subscribe({
@@ -135,21 +140,24 @@ export class CursoFormComponent implements OnInit {
     if (!this.activatedRoute.snapshot.params['id']) return;
     this.activatedRoute.data.pipe(take(1)).subscribe({
       next: (data) => {
-        if (data['course']) this.formulario.patchValue(data['course']);
+        if (data['course']) {
+          this.formulario.patchValue(data['course']);
+          this.loadLessons(data['course'].lessons.sort((a : Lesson, b : Lesson) => a.id - b.id));
+        }
       },
       error: () => this.toastSnakebarService.error('Erro ao carregar curso!')
     });
   }
 
-  matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string) : string {
+  matErrorMessage(formControlName: string, inputName: string, inputNameEqualsTo?: string): string {
     return FormValidator.validateSmallGenericInterpolation(<FormControl>this.formulario.get(formControlName), inputName, inputNameEqualsTo);
   }
 
-  matErrorFormArrayMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string) : string {
+  matErrorFormArrayMessage(formControlName: string, itemFormArray: AbstractControl, inputName: string): string {
     return FormValidator.validateFormArraySmallGenericInterpolation(formControlName, inputName, itemFormArray);
   }
 
-  isMatErrorFormArrayRequired() : boolean {
+  isMatErrorFormArrayRequired(): boolean {
     return this.lessons.invalid && this.lessons.hasError('required');
   }
 }
